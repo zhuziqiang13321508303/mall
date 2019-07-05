@@ -1,0 +1,189 @@
+.cart-container{
+    background:#f5f5f5;
+    width:100%;
+}
+/* 购物车头部 */
+.cart-top{
+    width:100%;
+    height:52px;
+    background:#fff;
+}
+.cart-top-container{
+    width:90%;
+    margin:0 auto;
+    height:52px;
+    min-width:960px;
+    display:flex;
+    justify-content:space-between;
+}
+.cart-top-left{
+    display:flex;
+    height:52px;
+    line-height:52px;
+    justify-content:space-between;
+    align-items:center;
+}
+.cart-top-left img{
+    width:120px;
+    height:30px;
+}
+.cart-top-left h2{
+    margin:0 40px;
+}
+.cart-top-right{
+    height:52px;
+    padding:14px 0;
+    box-sizing:border-box;
+    position:relative;
+    top:-6px;
+}
+/* 商品目录 */
+.cart-product-column{
+    width:90%;
+    min-width:960px;
+    margin:20px auto 0 auto;
+    background:red;
+    display:flex;
+    justify-content:space-between;
+    height:40px;
+    align-items:center;
+}
+.cart-product-left{
+    padding-left:40px;
+}
+.cart-product-left em{
+    margin-left:40px;
+    font-size:16px;
+    font-style:normal;
+}
+.cart-product-right span{
+    margin:0 50px;
+    font-size:16px;
+}
+/* 购物车商品列表 */
+.cart-product-list{
+    width:90%;
+    margin:0 auto;
+    min-width:960px;
+}
+.cart-product-list ul li{
+    width:100%;
+    background: #fff;
+    /* padding-left: 40px; */
+    margin-top: 10px;
+    padding-top: 20px;
+    height:240px;
+    display:flex;
+    min-width:960px;
+    justify-content:space-between;
+}
+.cart-product-list ul li>div:first-child{
+    padding-left:40px;
+    display:flex;
+}
+.cart-product-list ul li>div:first-child img{
+    width:100px;
+    height:100px;
+    margin-left:10px;
+}
+.cart-product-list ul li>div:first-child p{
+    width:280px;
+    min-height:20px;
+    line-height:1;
+    color:#333;
+    font-size:12px;
+    margin-left:10px;
+}
+.cart-product-list ul li>div:last-child{
+    width:520px;
+    display:flex;
+    justify-content:space-around;
+}
+
+/* .cart-product-list ul li>div:first-child{
+    position:relative;
+    left:-10px;
+} */
+/* .cart-product-list ul li img{
+    width:100px;
+    height:100px;
+}
+.cart-product-list ul li p{
+    font-size:12px;
+    color:#333;
+    min-height:20px;
+    line-height:1;
+    width:300px;
+    margin:0;
+}
+.cart-product-list ul li em:nth-of-type(1){
+    font-size:12px;
+    color:#222;
+    font-style:normal;
+    margin:0 40px;
+}
+.cart-product-list ul li em:nth-of-type(2){
+    font-size:12px;
+    color:#222;
+    font-style:normal;
+    margin:0 100px;
+} */
+/* 立即结算 */
+.cart-all-container{
+    width:100%;
+    background:#fff;
+    height:60px;
+}
+.cart-all-count{
+    width:90%;
+    min-width:960px;
+    height:60px;
+    margin-top:10px;
+    background:#fff;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.cart-all-left{
+    padding-left:40px;
+    height:60px;
+    line-height:60px;
+}
+.cart-all-right{
+    height:60px;
+    display:flex;
+
+}
+.cart-all-top,.cart-all-bottom{
+    height:30px;
+    line-height:30px;
+}
+.cart-all-top span{
+    color:#ca151e;
+    font-size:14px;
+    margin:0 10px;
+}
+.cart-all-bottom span:first-child{
+    color:#ca151e;
+}
+.cart-all-bottom span:last-child{
+    color:#333;
+}
+.cart-all-button{
+    width: 180px;
+    height: 60px;
+    line-height: 60px;
+    display: block;
+    background: #ca151e;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    outline:none;
+}
+/* 底部样式 */
+.cart-bottom{
+    width:100%;
+    height:140px;
+    background:red;
+}

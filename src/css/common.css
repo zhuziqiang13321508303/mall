@@ -1,0 +1,25 @@
+.active{
+    color:red;
+}
+*{
+    margin:0;
+    padding:0;
+}
+a{
+    color:#666;
+    text-decoration:none;
+}
+li{
+    list-style:none;
+}
+.ant-carousel .slick-slide {
+    text-align: center;
+    height: 480px;
+    line-height: 480px;
+    background: #364d79;
+    overflow: hidden;
+  }
+  
+  .ant-carousel .slick-slide h3 {
+    color: #fff;
+  }

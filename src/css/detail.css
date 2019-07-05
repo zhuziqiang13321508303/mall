@@ -1,0 +1,43 @@
+.detail-container{
+    width:100%;
+    background:#fff;
+    min-width:960px;
+}
+/* 头部面包屑 */
+.detail-bread{
+    width:100%;
+    height:30px;
+    margin-top:10px;
+    background:#fff;
+}
+.detail-bread-container{
+    width:90%;
+    height:30px;
+    min-width:960px;
+    background:red;
+    margin:0 auto;
+    padding-top:4px;
+    box-sizing:border-box;
+}
+.detail-bread-container a{
+    color:#666;
+    font-size:12px;
+}
+.detail-bread-container a:hover{
+    color:#333;
+}
+/* 页面主体部分 */
+.detail-main{
+    width:100%;
+    height:680px;
+    background:#fff;
+}
+.detail-main-container{
+    width:90%;
+    height:660px;
+    min-width:960px;
+    margin:0 auto;
+    background:green;
+    position:relative;
+    padding:10px;
+}

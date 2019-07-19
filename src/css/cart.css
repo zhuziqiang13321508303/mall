@@ -37,6 +37,10 @@
     position:relative;
     top:-6px;
 }
+.ant-steps-item-description {
+    position:relative;
+    left:-30px;
+}
 /* 商品目录 */
 .cart-product-column{
     width:90%;
@@ -99,35 +103,6 @@
     display:flex;
     justify-content:space-around;
 }
-
-/* .cart-product-list ul li>div:first-child{
-    position:relative;
-    left:-10px;
-} */
-/* .cart-product-list ul li img{
-    width:100px;
-    height:100px;
-}
-.cart-product-list ul li p{
-    font-size:12px;
-    color:#333;
-    min-height:20px;
-    line-height:1;
-    width:300px;
-    margin:0;
-}
-.cart-product-list ul li em:nth-of-type(1){
-    font-size:12px;
-    color:#222;
-    font-style:normal;
-    margin:0 40px;
-}
-.cart-product-list ul li em:nth-of-type(2){
-    font-size:12px;
-    color:#222;
-    font-style:normal;
-    margin:0 100px;
-} */
 /* 立即结算 */
 .cart-all-container{
     width:100%;

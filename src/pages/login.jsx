@@ -1,7 +1,10 @@
 import React,{Component} from 'react' 
 import {MyLayout}     from '../components/layout.jsx';
 import ReactDOM     from 'react-dom';
-import {Card,Tabs,Table,Form,Select,Input,Button,DatePicker,message} from 'antd';
+import {withRouter} from 'react-router-dom'
+import { createBrowserHistory } from 'history';
+import PropTypes from "prop-types";
+import {Card,Tabs,Table,Form,Select,Input,Button,DatePicker,Alert} from 'antd';
 import { visible } from 'ansi-colors';
 import huawei from '../assets/images/huawei.jpg'
 const {FormItem} = Form.Item;
@@ -13,6 +16,7 @@ class Login extends Component{
         this.state = {
           tab:1,
           index:1,
+
         };
         this.handleChange = this.handleChange.bind(this)
       } 
@@ -20,6 +24,7 @@ class Login extends Component{
         this.setState({tab:e-0});
     }
     render(){
+      let self=this
         let dataSource=[]
         let columns=[
             {title:'类型',dataIndex:'type',key:"type"},
@@ -27,7 +32,7 @@ class Login extends Component{
             {title:'时间',dataIndex:'time',key:"time"},
             {title:'操作',dataIndex:'operation',key:"operation"},
         ]
-        // let content = <WrappedLoginEmailForm/>;
+        let content = <WrappedLoginEmailForm history={self.props.history}/>;
         return (
             <div>
             <header className="register_header">
@@ -50,7 +55,7 @@ class Login extends Component{
                             <div className="h">
                              <span>帐号登录</span>  
                             </div>   
-                            <WrappedLoginEmailForm history={this.props.history}/>
+                            {content}
                         </div>  
                     </div>
                 </div>
@@ -69,57 +74,68 @@ class Login extends Component{
 
 
 class LoginEmailForm extends Component{
+  // static contextTypes = {
+  //   router: PropTypes.object
+  //   }
     constructor(props) {
         super(props); 
         this.state = {
-          loading_relay:false
+          loading_relay:false,
+          errormsg:''
         };
         this.handleSubmit = this.handleSubmit.bind(this); 
       } 
     componentDidMount() {
 
     }
-    //登录按钮
     handleSubmit(e){
-        let _this=this;
+      // const history1 = createBrowserHistory();
+      // const location = history1.location;
+        let self=this;
+        let url='/api/site/login'
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
-            var url= "/api/site/login";
+            console.log('Received values of form: ', values);
+            var data=new FormData();
+            data.append('name',values.name)
+            data.append('password',values.password)
+            self.setState({loading:true});
             var xhr = new XMLHttpRequest();
-            var data2 = new FormData();
-            data2.append('name',values.telephone);
-            data2.append('password',values.password);
-            xhr.open("POST", url,true);
-            xhr.send(data2);
-            xhr.onreadystatechange = function(){
-              if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    let body=JSON.parse(xhr.responseText);
-                    _this.props.history.push("/home");
-                    console.log("eee=========",body);
-                }else if (xhr.status === 401) {
-                    console.error(xhr.responseText);
-                    var code = null;
-                    try{
-                        code = JSON.parse(xhr.responseText)["code"];
-                        if(code==33){
-                            browserHistory.push("/login");
-                        }else{
-                            let  msg = JSON.parse(xhr.responseText)["msg"];
-                            message.error(msg,10);
-                        }
-                    }catch(e){
-                      
+            xhr.open("POST", url);
+            xhr.send(data);
+            xhr.onreadystatechange = function() {
+              if(xhr.readyState === XMLHttpRequest.DONE) {
+                  if(xhr.status === 200) {		
+                    console.log(typeof xhr.responseText)//string
+                    console.log(JSON.parse(xhr.responseText))		  	
+                    var user_data = JSON.parse(xhr.responseText);
+                    localStorage.setItem("current", user_data.currentAuthority);
+                    localStorage.setItem("type", user_data.type);
+                    // callback(null,{body:JSON.parse(xhr.responseText)});
+                    if(user_data.currentAuthority === 'admin'){
+                      // browserHistory.push('/home');
+                      self.props.history.push('/home')
+                      console.log(window)
+                      // this.context.router.history.push("/home");
+                      // history1.push('/#/order');
+                      // window.location.assign("/#/order")
+                      // window.location.hash="#/order"
+                      return false;
                     }
-                }else{
-                  let  msg = JSON.parse(xhr.responseText)["msg"];
-                    message.error(msg,10);
+                  } else if(xhr.status === 500){
+                    self.setState({'errormsg': '系统更新中，请稍后登录'});
+                  } else {
+                  var msg = null;
+                  try{
+                    msg = JSON.parse(xhr.responseText)["msg"];
+                  }catch(e){
+                    msg = "unknow";
+                  }
+                    self.setState({'errormsg': msg});
                 }
               }
-            };
-              console.log("aaaa====");
-            console.log('Received values of form: ', values);
+            }
           }
         });
     };
@@ -141,21 +157,29 @@ class LoginEmailForm extends Component{
     }
     render(){
         const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+        var errormsg = null;
+        if ( this.state.errormsg ) {
+            errormsg = <Alert style={{padding:0,textAlign:"center"}} message={this.state.errormsg} type="error" />;
+        }
         return (
             <Form onSubmit={(e)=>this.handleSubmit(e)}>
             <div>
                 <Form.Item>
-                  {getFieldDecorator('telephone', {
+                  {getFieldDecorator('name', {
                     validateTrigger:'onBlur',
-                    rules: [{
-                        required: true, message: '手机号码不能为空',
-                    },{
-                        validator:this.validator_phonenumber
-                    }]
-                  })(<Input style={{display:"block",width:'90%',outline:0,backgroundColor:'#f7f7f7',margin:"0 auto"}} placeholder='请输入手机号码/姓名'/>)}
+                    rules: [
+                        {
+                          required: true,
+                          message: '请输入姓名或者手机号',
+                        },{
+                          min:2,message:"长度需大于2位"
+                      },{
+                          max:11,message:"长度需小于11位"
+                      }
+                      ]
+                  })(<Input style={{display:"block",width:'90%',outline:0,backgroundColor:'#f7f7f7',margin:"0 auto"}} placeholder='请输入姓名或手机号'/>)}
                 </Form.Item> 
             </div>
-
             <div>
                 <Form.Item>
                   {getFieldDecorator('password', {
@@ -173,11 +197,15 @@ class LoginEmailForm extends Component{
                   })(<Input style={{display:"block",width:'90%',outline:0,backgroundColor:'#f7f7f7',margin:"0 auto"}}  type="password"  placeholder="请输入密码" />)}
                 </Form.Item> 
             </div>
+            {errormsg}
             <Button type='primary' className="login login_button" htmlType='submit' loading={this.state.loading_relay}>登录</Button>
         </Form>
             )
     }
 }
+// LoginEmailForm.contextTypes = {
+//   router: PropTypes.object
+// }
 const WrappedLoginEmailForm = Form.create({ name: 'login_form' })(LoginEmailForm);
 export default Login
 export {Login}

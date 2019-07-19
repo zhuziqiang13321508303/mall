@@ -133,6 +133,18 @@ body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, l
 .myorder.order_card .mycredit{
     margin-bottom: 30px;
 }
+.order_paynow,.order_cancle,.order_list{ 
+    cursor: pointer; 
+    text-align: center;
+    background-color: #ca151e;
+    border: 1px solid #ca151e;
+    color: #fff;
+}
+.order_cancle,.order_list{
+    margin-left: 1rem;
+    background-color: transparent;
+    color: #3a3a3a;
+}
 /* myorder end */
 /* register */
 .register_header {
@@ -243,7 +255,35 @@ body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, l
     text-align: center;
     margin:20px 110px;
 }
-/* rregister end */
+.input_container{
+    position:relative;
+    height: 70px;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    margin:10px auto;
+    line-height: 65px;
+    background-color: #f7f7f7;
+}
+.input_left{
+    width:100px;
+    padding-left: 10px;
+}
+.input_container .input_content{
+    position:absolute;
+    top:50%;
+    left:100px;
+    margin-top: -22px;
+    width:200px;
+}
+.input_container .codebutton{
+    position:absolute;
+    top:50%;
+    left:300px;
+    margin-top: -18px;
+    margin-left: 10px;
+    border:1px solid red;
+}
+/* register end */
 
 /* login */
 .login_notice{
@@ -511,15 +551,3 @@ body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, l
     font-size: 16px;
     font-weight:700;
 }
-/* 公共样式 */
-.ant-carousel .slick-slide {
-    text-align: center;
-    height: 480px;
-    line-height: 480px;
-    background: #364d79;
-    overflow: hidden;
-  }
-  
-  .ant-carousel .slick-slide h3 {
-    color: #fff;
-  }

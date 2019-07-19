@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import huawei from '../assets/images/huawei.jpg';
-import ad from '../assets/images/ad.jpg';
-import fl from '../assets/images/fl_bg.png';
-import left from '../assets/images/leftbg.jpg';
-import logo from '../assets/images/logo.jpg';
+// import huawei from '../assets/images/huawei.jpg';
+// import ad from '../assets/images/ad.jpg';
+// import fl from '../assets/images/fl_bg.png';
+// import left from '../assets/images/leftbg.jpg';
+// import logo from '../assets/images/logo.jpg';
 // import "../css/img.css";
 class Img extends Component {
   constructor(props) {
@@ -104,10 +104,10 @@ class Img extends Component {
    * 生命周期函数
    */
   // 组件初始化
-  componentWillMount() {
+  componentDidMount() {
     // this.initParam();
     this.updataImg(this.props);
-    this.setState({minImg:huawei,maxImg:huawei})
+    this.setState({minImg:"",maxImg:""})
   }
   
   // props 变化时更新
@@ -184,22 +184,24 @@ class Img extends Component {
   handleImageErrored() {
     this.setState({ imgLoad: false });
   }
-  mouseEnter1(){
-    this.setState({minImg:huawei,maxImg:huawei})
-  }
-  mouseEnter2(){
-    this.setState({minImg: ad,maxImg: ad})
-  }
-  mouseEnter3(){
-    this.setState({minImg:fl,maxImg:fl})
-  }
-  mouseEnter4(){
-    this.setState({minImg:left,maxImg:left})
-  }
-  mouseEnter5(){
-    this.setState({minImg:logo,maxImg:logo})
-  }
+  // mouseEnter1(){
+  //   this.setState({minImg:this.props.data[0]?this.props.data[0].url:'',maxImg:this.props.data[0]?this.props.data[0].url:''})
+  // }
+  // mouseEnter2(){
+  //   this.setState({minImg:this.props.data[1]?this.props.data[1].url:'',maxImg:this.props.data[1]?this.props.data[1].url:''})
+  // }
+  // mouseEnter3(){
+  //   this.setState({minImg:this.props.data[2]?this.props.data[2].url:'',maxImg:this.props.data[2]?this.props.data[2].url:''})
+  // }
+  // mouseEnter4(){
+  //   this.setState({minImg:this.props.data[3]?this.props.data[3].url:'',maxImg:this.props.data[3]?this.props.data[3].url:''})
+  // }
   render() {
+    console.log(this.props.data);
+    let arr=[];
+    if(this.props.data.length>0){
+        arr=this.props.data;
+    }
     const { cssStyle, magnifierOff, minImg, maxImg, imgLoad } = this.state;
     return (
       <div>
@@ -213,12 +215,19 @@ class Img extends Component {
                 />
                 {magnifierOff && <div style={cssStyle.mouseBlock} />}
             </div>
+            {/* <div style={cssStyle.imgContainerBelow} className="imgContainerBelow">
+                  <img src={this.props.data[0]?this.props.data[0].url:''} style={{width:60,height:60}} onMouseEnter={this.mouseEnter1.bind(this)}/>
+                  <img src={this.props.data[1]?this.props.data[1].url:''} style={{width:60,height:60}} onMouseEnter={this.mouseEnter2.bind(this)}/>
+                  <img src={this.props.data[2]?this.props.data[2].url:''} style={{width:60,height:60}} onMouseEnter={this.mouseEnter3.bind(this)}/>
+                  <img src={this.props.data[3]?this.props.data[3].url:''} style={{width:60,height:60}} onMouseEnter={this.mouseEnter4.bind(this)}/>
+            </div> */}
             <div style={cssStyle.imgContainerBelow} className="imgContainerBelow">
-                  <img src={huawei} style={{width:60,height:60}} onMouseEnter={this.mouseEnter1.bind(this)}/>
-                  <img src={ad} style={{width:60,height:60}} onMouseEnter={this.mouseEnter2.bind(this)}/>
-                  <img src={fl} style={{width:60,height:60}} onMouseEnter={this.mouseEnter3.bind(this)}/>
-                  <img src={left} style={{width:60,height:60}} onMouseEnter={this.mouseEnter4.bind(this)}/>
-                  <img src={logo} style={{width:60,height:60}} onMouseEnter={this.mouseEnter5.bind(this)}/>
+                {
+                  arr.map((item,index)=>{
+                    <img src={item.url} key={index}/>
+                    console.log(item.url);
+                  })
+                }
             </div>
             {magnifierOff && (
                 <div style={cssStyle.magnifierContainer}>

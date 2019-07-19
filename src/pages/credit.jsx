@@ -14,7 +14,9 @@ class Credit extends Component{
       handleChange(e) {
         this.setState({tab:e-0});
       }      
-
+      componentDidMount(){
+        console.log(11)
+      }
     render(){
         let tabs=(
         <Tabs defaultActiveKey="1" onChange={this.handleChange}>

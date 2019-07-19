@@ -1,0 +1,220 @@
+.previewlist-container{
+    background:#f5f5f5;
+    width:100%;
+}
+/* 订单头部 */
+.previewlist-top{
+    width:100%;
+    height:52px;
+    background:#fff;
+}
+.previewlist-top-container{
+    width:90%;
+    margin:0 auto;
+    height:52px;
+    min-width:960px;
+    display:flex;
+    justify-content:space-between;
+}
+.previewlist-top-left{
+    display:flex;
+    height:52px;
+    line-height:52px;
+    justify-content:space-between;
+    align-items:center;
+}
+.previewlist-top-left img{
+    width:120px;
+    height:30px;
+}
+.previewlist-top-left h2{
+    margin:0 40px;
+}
+.previewlist-top-right{
+    height:52px;
+    padding:14px 0;
+    box-sizing:border-box;
+    position:relative;
+    top:-6px;
+}
+/* 收货地址 */
+.previewlist-address{
+    width:100%;
+    background:#fff;
+}
+.previewlist-address-container{
+    width:90%;
+    min-height:230px;
+    min-width:960px;
+    margin:0 auto;
+    box-sizing:border-box;
+    padding:40px 40px 16px;
+    display:flex;
+    position:realtive;
+}
+.previewlist-address-display{
+    width:120px;
+    height:30px;
+    text-align:center;
+    line-height:30px;
+    position:absolute;
+    top:55px;
+    right:333px;
+}
+.previewlist-address-input ul li{
+    float:left;
+    width:240px;
+    height:120px;
+    color:#666;
+    font-size:12px;
+    border:1px solid #333;
+    margin:0 0 10px 10px;
+    box-sizing:border-box;
+    padding:5px;
+    position:relative;
+}
+.previewlist-address-input ul li:last-child{
+    margin:0 10px 10px;;
+}
+.previewlist-address-input ul li>div:first-child{
+    display:flex;
+    justify-content:space-between;
+    font-size:16px;
+}
+.previewlist-address-input ul li p{
+    font-size:12px;
+}
+.previewlist-address-input ul li>span{
+    position:absolute;
+    bottom:0px;
+    right:10px;
+    color:#fff;
+}
+.previewlist-address-input ul li>span:hover{
+    color:red;
+}
+.previewlist-address-input ul .listname{
+    border:3px dashed red;
+}
+.previewlist-modal-content div{
+    padding:10px;
+}
+.previewlist-modal-content div input{
+    width:400px !important;
+    height:30px;
+    margin-left:30px;
+}
+.previewlist-modal-content div textarea{
+    width:400px;
+    outline:none;
+    margin-left:30px;
+} 
+/* .ant-cascader-picker-label{
+    left:30px;
+} */
+/* 订单商品 */
+.previewlist-product-list{
+    width:100%;
+    background:#fff;
+}
+.previewlist-product-container{
+    width:90%;
+    min-width:960px;
+    margin:0 auto;
+    background:red;
+}
+.previewlist-detail-message div{
+    width:100%;
+    height:100px;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    background:yellow;
+    margin:10px 0;
+}
+.previewlist-detail-message img{
+    width:100px;
+    height:100px;
+}
+.previewlist-detail-message p{
+    position:relative;
+    top:10px;
+}
+.previewlist-cheap-ticket{
+    width:100%;
+    height:150px;
+    display:flex;
+    justify-content:space-around;
+}
+.previewlist-ticket-left{
+    width:50%;
+    height:150px;
+    padding-left:10%;
+}
+.previewlist-ticket-left span:first-child{
+    font-size:25px;
+}
+.previewlist-ticket-right{
+    width:50%;
+    height:150px;
+    padding-left:30%;
+}
+.previewlist-ticket-right p{
+    width:100%;
+    height:20px;
+    margin-top:10px;
+    line-height:20px;
+    font-size:16px;
+}
+/* 订单按钮 */
+.previewlist-count{
+    width:100%;
+    height:250px;
+}
+.previewlist-count-container{
+    width:90%;
+    margin:0 auto;
+    height:250px;
+    min-width:960px;
+    padding:10px 10px 10px 60%;
+    background:blue;
+}
+.previewlist-data-all{
+    width:300px;
+    height:250px;
+    float:right;
+}
+.previewlist-count-container>div>div:first-child{
+    color:#666;
+    font-size:12px;
+    width:300px;
+    height:74px;
+    text-align: right;
+}
+.previewlist-count-container>div>div:first-child>div:first-child{
+    font-size:30px;
+    color:red;
+}
+.previewlist-address-again{
+    background: #fef6f3;
+    border: 1px solid #fbd4c4;
+    padding:5px;
+    max-width: 240px;
+    height:72px;
+    margin-left:62px;
+}
+.previewlist-address-again span:last-child{
+    margin-left:10px;
+}
+.previewlist-count-container button{
+    margin-top: 20px;
+    text-align: center;
+    background: #ca141d;
+    color: #fff;
+    width: 172px;
+    height: 46px;
+    line-height: 46px;
+    font-size: 18px;
+    border-radius: 2px;
+    margin-left:128px;
+}

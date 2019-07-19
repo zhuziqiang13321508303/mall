@@ -40,4 +40,37 @@
     background:green;
     position:relative;
     padding:10px;
+    display:flex;
+    justify-content:space-between;
+}
+.detail-description{
+    width:100%;
+    min-width:540px;
+    height:620px;
+    padding:10px;
+    background:orange;
+    box-sizing:border-box;
+}
+.detail-price{
+    width:100%;
+    height:60px;
+    background:#ccc;
+}
+.detail-price div{
+    width:100%;
+    height:30px;
+    line-height:30px;
+}
+.detail-price div span:first-child{
+    margin-right:20px;
+}
+.detail-price div:last-child span:last-child{
+    color:red;
+    padding:2px;
+    border:1px solid red;
+}
+.detail-serverice,.detail-code,.detail-product{
+    width:100%;
+    height:50px;
+    line-height:50px;
 }

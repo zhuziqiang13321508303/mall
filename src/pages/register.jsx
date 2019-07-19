@@ -13,12 +13,9 @@ class Register extends Component{
         this.state = {
           tab:1,
           index:1,
-          
         };
         this.handleChange = this.handleChange.bind(this)
         this.topSelectChange=this.topSelectChange.bind(this)
-       
-        
       } 
     handleChange(e) {
         this.setState({tab:e-0});
@@ -91,96 +88,16 @@ class RegisterPhoneForm extends Component{
     constructor(props) {
         super(props); 
         this.state = {
-          loading_relay:false,
+          loading_relay:false
         };
-        this.handleSubmit = this.handleSubmit.bind(this);
-        
+        this.handleSubmit = this.handleSubmit.bind(this); 
+        this.codeClick = this.codeClick.bind(this); 
+        this.telephoneChange = this.telephoneChange.bind(this); 
       } 
     componentDidMount() {
 
     }
-     //获取短信验证码按钮
-     getCode(){
-      let self =this;
-      let phone=this.state.phone;
-      var url= "/api/site/verification_code?phone="+phone;
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", url, true);
-      xhr.send();
-      xhr.onreadystatechange = function(){
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-              let body=xhr.responseText;
-              console.log(body);
-          }else if (xhr.status === 401) {
-              console.error(xhr.responseText);
-              var code = null;
-              try{
-                  code = JSON.parse(xhr.responseText)["code"];
-                  if(code==33){
-                      browserHistory.push("/login");
-                  }else{
-                      let  msg = JSON.parse(xhr.responseText)["msg"];
-                      message.error(msg,10);
-                  }
-              }catch(e){
-                 
-              }
-          }else{
-             let  msg = JSON.parse(xhr.responseText)["msg"];
-              message.error(msg,10);
-          }
-        }
-      };
 
-      console.log("cccc========");
-
-    }
-    //注册按钮
-    handleSubmit(e){
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-          if (!err) {
-          console.log('Received values of form: ', values);
-          let self =this;
-          var url= "/api/site/registeruser";
-          var xhr = new XMLHttpRequest();
-          var data2 = new FormData();
-          data2.append('name',values.area);
-          data2.append('phone',values.telephone);
-          data2.append('password',values.password);
-          data2.append('verification_code',values.virification);
-          xhr.open("POST", url,true);
-          xhr.send(data2);
-          xhr.onreadystatechange = function(){
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                  let body=JSON.parse(xhr.responseText);
-                  console.log("eee=========",body);
-              }else if (xhr.status === 401) {
-                  console.error(xhr.responseText);
-                  var code = null;
-                  try{
-                      code = JSON.parse(xhr.responseText)["code"];
-                      if(code==33){
-                          browserHistory.push("/login");
-                      }else{
-                          let  msg = JSON.parse(xhr.responseText)["msg"];
-                          message.error(msg,10);
-                      }
-                  }catch(e){
-                    
-                  }
-              }else{
-                let  msg = JSON.parse(xhr.responseText)["msg"];
-                  message.error(msg,10);
-              }
-            }
-          };
-            console.log("aaaa====");
-              }
-            });
-        };
     validator_phonenumber(rule,value,callback){ 
         if(!value){
             callback();
@@ -190,8 +107,6 @@ class RegisterPhoneForm extends Component{
             }else if(value%1!==0||value<0){
                 callback('请输入正整数');
             }else{
-                this.setState({phone:value})
-                console.log("ddd=========",this.state.phone);
                 callback();
             } 
         }
@@ -199,8 +114,87 @@ class RegisterPhoneForm extends Component{
     handleSelectChange(){
 
     }
+    telephoneChange(e){
+      console.log(e.target.value)
+      this.setState({telephone:e.target.value})
+    }
+    codeClick(){
+      let self = this;
+      let url = `/api/site/verification_code?phone=${this.state.telephone}`;
+      var callback = function(err,res){
+        if(err){
+          console.log(err);
+        }else{
+          console.log(res.body);
+          self.setState({money:res.body.data});
+        }
+      };
+      var xhr  = new XMLHttpRequest();
+      xhr.open("GET", url);
+      // xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8") ; 
+      xhr.send();
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState === XMLHttpRequest.DONE) {
+            if(xhr.status === 200) {
+              // callback(null,{body:JSON.parse(xhr.responseText)});
+            } else {
+              callback({err:JSON.parse(xhr.responseText)},null);
+            }
+        }
+      };
+    }
+    handleSubmit(e){
+      let self=this;
+      console.log(self.props.history)
+      let url='/api/site/registeruser'
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values);
+          // var data={
+          //   name:values.name,
+          //   password:values.password,
+          //   phone:values.telephone,
+          //   verification_code:values.verification
+          // }
+          var data=new FormData();
+          data.append('name',values.name)
+          data.append('password',values.password)
+          data.append('phone',values.telephone)
+          data.append('verification_code',values.verification)
+          self.setState({loading:true});
+          let callback = function(err,res){
+            if(err){
+                message.error(err.err.msg);
+                self.setState({loading:false});
+            }else{
+                message.success('注册成功');
+                
+                self.setState({register:false,errormsg:null,loading:false},()=>{setFieldsValue({username:values.phone,password:'888888'})});
+            }
+          };
+          var xhr = new XMLHttpRequest();
+		      xhr.open("POST", url);
+		      // xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8") ; 
+          // xhr.send(JSON.stringify(data));
+          xhr.send(data);
+          xhr.onreadystatechange = function() {
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+                if(xhr.status === 200) {
+                  // callback(null,{body:JSON.parse(xhr.responseText)});
+                  console.log(xhr.responseText)
+                  self.setState({loading:false});
+                  console.log(self.props.history)
+                  self.props.history.push('/login')
+                } else {
+                  // callback({err:JSON.parse(xhr.responseText)},null);
+                }
+            }
+          }
+        }
+      })
+    };
     render(){
-        let _this=this;
         const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
         return (
             <Form onSubmit={(e)=>this.handleSubmit(e)} className="reg_detail">
@@ -217,7 +211,7 @@ class RegisterPhoneForm extends Component{
                       }
                     ]
                   })(<Select
-                    className="register area_select"
+                    className="area_select"
                     onChange={this.handleSelectChange}
                   >
                     <Option value="cn">中国</Option>
@@ -226,8 +220,26 @@ class RegisterPhoneForm extends Component{
                 </Form.Item> 
             </div>
 
+            <div className="input_container">
+                <div className="input_left">姓名</div>
+                <Form.Item className="input_content">
+                  {getFieldDecorator('name', {
+                    validateTrigger:'onBlur',
+                    rules: [
+                      {
+                        required: true,
+                        message: '请输入姓名',
+                      },{
+                        min:2,message:"姓名长度需大于2位"
+                    },{
+                        max:10,message:"姓名长度需小于10位"
+                    }
+                    ]
+                  })(<Input className="password input_area" placeholder="请输入姓名" />)}
+                </Form.Item> 
+            </div>
             <div className="input_container" >
-                <Form.Item className="input_left">
+                <Form.Item className="input_content" style={{left:0,width:100}}>
                   {getFieldDecorator('telephone_area', {
                     initialValue:"cn",
                     validateTrigger:'onBlur',
@@ -240,7 +252,6 @@ class RegisterPhoneForm extends Component{
                   })(<Select
                     onChange={this.handleSelectChange}
                   >
-
                     <Option value="cn">+86中国</Option>
                     <Option value="aomen">+61澳大利亚</Option>
                   </Select>)}
@@ -252,16 +263,16 @@ class RegisterPhoneForm extends Component{
                     rules: [{
                         required: true, message: '手机号码不能为空',
                     },{
-                        validator:_this.validator_phonenumber.bind(this)
+                        validator:this.validator_phonenumber
                     }]
-                  })(<Input className="input_area" placeholder='请输入11位手机号码'/>)}
+                  })(<Input onChange={this.telephoneChange} className="input_area" placeholder='请输入11位手机号码'/>)}
                 </Form.Item> 
             </div>
 
             <div className="input_container">
                 <div className="input_left">短信验证码</div>
                 <Form.Item className="input_content">
-                  {getFieldDecorator('virification', {
+                  {getFieldDecorator('verification', {
                     validateTrigger:'onBlur',
                     rules: [
                       {
@@ -270,8 +281,8 @@ class RegisterPhoneForm extends Component{
                       }
                     ]
                   })(<Input  className="password input_area" placeholder="请输入验证码" />)}
-                  <button onClick={_this.getCode.bind(this)}>获取验证码</button>
-                </Form.Item> 
+                </Form.Item>
+                <Button className="codebutton" onClick={this.codeClick}>获取验证码</Button> 
             </div>
 
             <div className="input_container">
@@ -317,10 +328,10 @@ class RegisterPhoneForm extends Component{
                 <Form.Item className="input_content">
                   {getFieldDecorator('birth_date', {
                     rules: [{ type: 'object', required: true, message: '请选择出生日期' }]
-                  })( <DatePicker/>)}
+                  })( <DatePicker style={{width:200}}/>)}
                 </Form.Item> 
             </div>
-            <Button type='primary' className="register_button" htmlType='submit' loading={this.state.loading_relay} >注册</Button>
+            <Button type='primary' className="register_button" htmlType='submit' loading={this.state.loading}>注册</Button>
         </Form>
             )
     }
@@ -407,7 +418,7 @@ class RegisterEmailForm extends Component{
             <div className="input_container">
                 <div className="input_left">邮件验证码</div>
                 <Form.Item className="input_content">
-                  {getFieldDecorator('email_virification', {
+                  {getFieldDecorator('email_verification', {
                     validateTrigger:'onBlur',
                     rules: [
                       {
@@ -491,7 +502,7 @@ class RegisterEmailForm extends Component{
             <div className="input_container">
                 <div className="input_left">短信验证码</div>
                 <Form.Item className="input_content">
-                  {getFieldDecorator('virification', {
+                  {getFieldDecorator('verification', {
                     validateTrigger:'onBlur',
                     rules: [
                       {

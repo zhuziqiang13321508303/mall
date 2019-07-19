@@ -1,5 +1,9 @@
 import React,{Component} from 'react';
 import {Icon,Menu,Carousel,Empty,Row, Col,Popover,BackTop,Modal} from "antd";
+import {NavLink} from "react-router-dom";
+import CompanyMessage from "./companyMessage.jsx";
+import Fixed from "./fixed.jsx";
+import TopNav from "./topNav.jsx";
 import '../css/home.css';
 import $ from "jquery";
 const { SubMenu }  = Menu;
@@ -8,32 +12,32 @@ class Home extends Component{
         super(props)
         this.state={
             show:"block",
-            arr1:[{name:"首页",href:"#"},{name:"合宙官网",href:"#"},{name:"荣耀官网",href:"#"},{name:"企业购",href:"#"}],
-            arr2:[{name:"请登录",href:"#"},{name:"注册",href:"#"},{name:"我的订单",href:"#"}],
+            // arr1:[{name:"首页",href:"#/home"},{name:"合宙官网",href:"#/home"},{name:"荣耀官网",href:"#"},{name:"企业购",href:"#"}],
+            // arr2:[{name:"请登录",href:"#/login"},{name:"注册",href:"#/register"},{name:"我的订单",href:"#/order"}],
             arr3:[{name:"华为P30",href:"#"},{name:"荣耀20",href:"#"},{name:"Mate  20系列",href:"#"},{name:"荣耀V20",href:"#"}],
-            reverse:"down",
-            arr4:[{name:"EMUI",href:"https://www.baidu.com"},{name:"开发商城",href:"#"},{name:"终端",href:"#"},{name:"联盟",href:"#"}],
-            showHide:"none",
+            // reverse:"down",
+            // arr4:[{name:"EMUI",href:"https://www.baidu.com"},{name:"开发商城",href:"#"},{name:"终端",href:"#"},{name:"联盟",href:"#"}],
+            // showHide:"none",
             current:"mail",
             backgrounds:"#f9f9f9",
-            current: 'mail',
-            flag:"down",
-            showHides:"none",
-            bg:"#f9f9f9",
-            arr5:[{name:"服务中心",href:"https://www.baidu.com"},{name:"联系客服",href:"#"}],
-            bgs:"#f9f9f9",
+            //current: 'mail',
+            // flag:"down",
+             showHides:"none",
+            // bg:"#f9f9f9",
+            // arr5:[{name:"服务中心",href:"https://www.baidu.com"},{name:"联系客服",href:"#"}],
+            // bgs:"#f9f9f9",
             flag2:"down",
-            showHides2:"none",
-            arr6:[
-                {name:"商城首页",href1:"https://www.baidu.com",href2:"https://www.baidu.com"},
-                {name:"频道",href1:"#",brand1:"华为专区",brand2:"华为专区",href2:"https://www.baidu.com",href2:"https://www.baidu.com"},
-                {name:"产品",href1:"#",href2:"https://www.baidu.com",brand1:"华为专区",brand2:"华为专区"},
-                {name:"增值服务",href1:"#",brand1:"华为专区",brand2:"华为专区",href2:"https://www.baidu.com"},
-                {name:"会员",href:"#",brand1:"华为专区",brand2:"华为专区",href2:"https://www.baidu.com"}
-            ],
-            number:0,
-            bgss:"#f9f9f9",
-            showHides3:"none",
+            //showHides2:"none",
+            // arr6:[
+            //     {name:"商城首页",href1:"https://www.baidu.com",href2:"https://www.baidu.com"},
+            //     {name:"频道",href1:"#",brand1:"华为专区",brand2:"华为专区",href2:"https://www.baidu.com",href2:"https://www.baidu.com"},
+            //     {name:"产品",href1:"#",href2:"https://www.baidu.com",brand1:"华为专区",brand2:"华为专区"},
+            //     {name:"增值服务",href1:"#",brand1:"华为专区",brand2:"华为专区",href2:"https://www.baidu.com"},
+            //     {name:"会员",href:"#",brand1:"华为专区",brand2:"华为专区",href2:"https://www.baidu.com"}
+            // ],
+            // number:0,
+            // bgss:"#f9f9f9",
+            // showHides3:"none",
             arr7:[
                 {name:"手机",href1:"https://www.baidu.com",produce:[{name:'荣耀',href:"#"},{name:'HUAWEI',href:"#"},{name:'P系列',href:"#"}]},
                 {name:"手机",href1:"https://www.baidu.com",produce:[{name:'荣耀',href:"#"},{name:'HUAWEI',href:"#"},{name:'P系列',href:"#"}]},
@@ -70,13 +74,8 @@ class Home extends Component{
             {img:'#',name:"荣耀20",href:"#",price:2399,tip:"最高优惠800"},
             {img:'#',name:"荣耀20",href:"#",price:2399,tip:"最高优惠800"}
         ],
-        arr13:[
-            {img:'#',name:"荣耀21",href:"#",price:2399,tip:"最高优惠800"},
-            {img:'#',name:"荣耀21",href:"#",price:2399,tip:"最高优惠800"},
-            {img:'#',name:"荣耀21",href:"#",price:2399,tip:"最高优惠800"},
-            {img:'#',name:"荣耀21",href:"#",price:2399,tip:"最高优惠800"},
-            {img:'#',name:"荣耀21",href:"#",price:2399,tip:"最高优惠800"}
-        ],
+        arr13:[],
+        arr130:[],
         arr14:[
             {title:"购物相关",produce:[{tip:"鼠标1",href:"#"},{tip:"移动电源1",href:"#"},{tip:"手机2",href:"#"},{tip:"鼠标2",href:"#"}]},
             {title:"保修与退换货",produce:[{tip:"鼠标1",href:"#"},{tip:"移动电源1",href:"#"},{tip:"手机2",href:"#"},{tip:"鼠标2",href:"#"}]},
@@ -89,7 +88,12 @@ class Home extends Component{
         {content:"公告内容4",href:"#"},{content:"公告内容5",href:"#"},{content:"公告内容6",href:"#"},{content:"公告内容1",href:"#"}],
         top:0,
         counts:0,
+        left:0,
+        right:5,
+        arr16:[],
         }
+        this.recommend=this.recommend.bind(this);
+        //this.hotSell=this.hotSell.bind(this);
     }
     //设定定时器
     componentDidMount(){
@@ -107,6 +111,65 @@ class Home extends Component{
             }
            
         }, 2000);
+        this.recommend(3);
+        this.recommend(2);
+        this.recommend(1);
+        this.recommend(0);
+        //this.hotSell();
+    }
+    //轮播图产品调用接口
+    //热销产品接口调用
+    //精品推荐接口调用
+    recommend(value){
+        let  _this=this;
+        var url= "/api/mall/recommended_product?type="+value;
+        var xhr = new XMLHttpRequest(); 
+        xhr.open("get", url,true);
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let body=JSON.parse(xhr.responseText).data;
+                if(value===3){
+                    _this.setState({arr130:body},()=>{
+                        let arr=_this.state.arr130.slice(0,5);
+                        _this.setState({arr13:arr});
+                    });
+                }
+               if(value===2){
+                   _this.setState({arr12:body})
+               }
+               if(value===1){
+                    _this.setState({})
+               }
+               if(value===0){
+                   _this.setState({
+                        arr16:body
+                   })
+                   console.log("ooooo===",body);
+               }
+                console.log("fff=========",body);
+            }else if (xhr.status === 401) {
+                console.error(xhr.responseText);
+                var code = null;
+                try{
+                    code = JSON.parse(xhr.responseText)["code"];
+                    if(code==33){
+                        browserHistory.push("/login");
+                    }else{
+                        let  msg = JSON.parse(xhr.responseText)["msg"];
+                        message.error(msg,10);
+                    }
+                }catch(e){
+                    
+                }
+            }else{
+                let  msg = JSON.parse(xhr.responseText)["msg"];
+                message.error(msg,10);
+            }
+            }
+        };
+        console.log("获取精品推荐列表");
     }
    //开启定时器
    mouseLeave9(){
@@ -146,30 +209,30 @@ class Home extends Component{
         console.log("您点击了搜索按钮");
     }
     //更多精彩符号反转
-    handleEnter(){
-        this.setState({reverse:"up",showHide:"block",backgrounds:"#fff"});
-    }
-    handleLeave(){
-        this.setState({reverse:"down",showHide:"none", backgrounds:"#f9f9f9"});
-    }
-    mouseEnter(){
-        this.setState({flag:"up",showHides:"block",bg:"#fff"});
-    }
-    mouseLeave(){
-        this.setState({flag:"down",showHides:"none", bg:"#f9f9f9"});
-    }
-    mouseEnter2(){
-        this.setState({flag2:"up",showHides2:"block",bgs:"#fff"});
-    }
-    mouseLeave2(){
-        this.setState({flag2:"down",showHides2:"none", bgs:"#f9f9f9"});
-    }
-    mouseEnter3(){
-        this.setState({showHides3:"block",bgss:"#fff"});
-    }
-    mouseLeave3(){
-        this.setState({showHides3:"none", bgss:"#f9f9f9"});
-    }
+    // handleEnter(){
+    //     this.setState({reverse:"up",showHide:"block",backgrounds:"#fff"});
+    // }
+    // handleLeave(){
+    //     this.setState({reverse:"down",showHide:"none", backgrounds:"#f9f9f9"});
+    // }
+    // mouseEnter(){
+    //     this.setState({flag:"up",showHides:"block",bg:"#fff"});
+    // }
+    // mouseLeave(){
+    //     this.setState({flag:"down",showHides:"none", bg:"#f9f9f9"});
+    // }
+    // mouseEnter2(){
+    //     this.setState({flag2:"up",showHides2:"block",bgs:"#fff"});
+    // }
+    // mouseLeave2(){
+    //     this.setState({flag2:"down",showHides2:"none", bgs:"#f9f9f9"});
+    // }
+    // mouseEnter3(){
+    //     this.setState({showHides3:"block",bgss:"#fff"});
+    // }
+    // mouseLeave3(){
+    //     this.setState({showHides3:"none", bgss:"#f9f9f9"});
+    // }
     mouseEnter4(index){
         let arr10=["none","none","none","none","none","none"];
         arr10[index]="flex";
@@ -188,40 +251,49 @@ class Home extends Component{
       }
       //精品商品数据获取
       leftData(){
+          if(this.state.left>=5){
+            let lefts=this.state.left-5;
+            let rights=this.state.right-5;
+            this.setState({left:lefts,right:rights});
+          }else{
+              this.setState({left:0,right:5})
+          }
+          let arr=this.state.arr130.slice(this.state.left,this.state.right);
+          this.setState({arr13:arr});
           console.log("你点击了获取left数据");
       }
       rightData(){
+        let length=this.state.arr130.length-5;
+        if(this.state.right<=length){
+            let lefts=this.state.left+5;
+            let rights=this.state.right+5;
+            this.setState({left:lefts,right:rights});
+        }else{
+            let length=this.state.arr130.length;
+            let lengths=this.state.arr130.length-5
+            this.setState({right:length,left:lengths});
+        }
+        let arr=this.state.arr130.slice(this.state.left,this.state.right);
+        this.setState({arr13:arr});
         console.log("你点击了获取right数据");
     }
-    //qq弹窗的显示与隐藏
-    showModal(){
-        this.setState({
-          visible: true,
-        });
-      };
-    
-      handleOk(e){
-        this.setState({
-          visible: false,
-        });
-      };
-    
-      handleCancel(e){
-        this.setState({
-          visible: false,
-        });
-      };
     
     render(){
         const showHide=this.state.showHide;
         const _this=this;
+        // if(this.state.arr16[0]){
+        //     let image=this.state.arr16[0].image
+        // }
         return(
             <div className="home-container">
-                <div className="home-top" title="荣耀" style={{display:this.state.show}}>
-                    <div className="home-top-word"><a href="#">荣耀20系列新品开售享2999元豪礼</a></div>
-                    <div className="home-top-close" title="关闭" onClick={this.topclose.bind(this)}>X</div>
-                </div>
-                <div className="top-nav">
+                  <NavLink to="/cheapproduct/1">
+                        <div className="home-top" title="荣耀" style={{display:this.state.show}}>
+                                <div className="home-top-word"><a href="#">荣耀20系列新品开售享2999元豪礼</a></div>
+                                <div className="home-top-close" title="关闭" onClick={this.topclose.bind(this)}>X</div>
+                                {/* <img src={this.state.arr16[0]?this.state.arr16[0].image:''} className="home-top-image"/> */}
+                        </div>
+                </NavLink>
+                {/* <div className="top-nav">
                     <div className="top-nav-container">
                         <div className="top-nav-left">
                             <div>
@@ -286,7 +358,7 @@ class Home extends Component{
                             <div className="top-produce-container"  onMouseLeave={this.mouseLeave3.bind(this)} style={{background:this.state.bgss}} onMouseEnter={this.mouseEnter3.bind(this)}>
                                 <div className="top-nav-produce">
                                     <Icon type="shopping-cart" style={{fontSize:16}}/>
-                                    <span>购物车({this.state.number})</span>
+                                    <span><a href="#/cart">购物车({this.state.number})</a></span>
                                 </div>
                                 <div className="net-nav-produce" style={{display:this.state.showHides3}}>
                                         <Empty description="您的购物车是空的，快去选购吧"/>
@@ -294,7 +366,8 @@ class Home extends Component{
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
+                 <TopNav/>
                 <div className="home-middle-nav">
                     <div className="home-middle-container">
                         <div className="home-middle-left">
@@ -319,16 +392,16 @@ class Home extends Component{
                     <div className="home-slide-container">
                         <Carousel autoplay ref={el =>this.slider = el}>
                             <div>
-                            <h3>1</h3>
+                                <h3>1</h3>
                             </div>
                             <div>
-                            <h3>2</h3>
+                                <h3>2</h3>
                             </div>
                             <div>
-                            <h3>3</h3>
+                                <h3>3</h3>
                             </div>
                             <div>
-                            <h3>4</h3>
+                                <h3>4</h3>
                             </div>
                         </Carousel>
                         <div className="home-tag-one"><Icon type="left" onClick={this.next.bind(this)} style={{color:"#fff",fontSize:15}}/></div>
@@ -463,7 +536,7 @@ class Home extends Component{
                             <div>
                                 <span>你好！&nbsp;请</span>
                                 <a href="#/login">登录</a>/
-                                <a href="#/sign">注册</a>
+                                <a href="#/register">注册</a>
                             </div>
                             <div>
                                 <a>新人福利</a>
@@ -478,18 +551,21 @@ class Home extends Component{
                         <h2>热销产品</h2>
                         <div className="home-hot-play">
                             <div className="home-hot-big">
-                                <img src="#"/>
+                               {/* <NavLink to={"/detail/"+item.id}><img src="#"/></NavLink> */}
+                               <img src="#"/>
                             </div>
                                 <ul>
                                     {
                                         _this.state.arr12.map((item,index)=>{
                                             return (
-                                                <li key={index}>
-                                                    <img src={item.img}/>
-                                                    <div>{item.name}</div>
-                                                    <div>{item.tip}</div>
-                                                    <div>￥{item.price}</div>
-                                                </li>
+                                                <NavLink to={"/detail/"+item.product_id} key={index}>
+                                                    <li>
+                                                        <img src={item.image}/>
+                                                        <div>{item.name}</div>
+                                                        <div>{item.desc}</div>
+                                                        <div>￥{item.price}</div>
+                                                    </li>
+                                                </NavLink>
                                             )
                                         })
                                     }
@@ -504,14 +580,16 @@ class Home extends Component{
                              <ul>
                                  {
                                    _this.state.arr13.map((item,index)=>{
-                                         return (<li key={index}>
+                                         return (<NavLink to={"/detail/"+item.product_id} key={index}>
+                                            <li>
                                                 <div>
-                                                    <img src={item.img}/>
-                                                    <div>{item.tip}</div>
+                                                    <img src={item.image}/>
+                                                    <div>{item.desc}</div>
                                                 </div>
                                                 <div>{item.name}</div>
                                                 <div>￥{item.price}</div>
-                                         </li>)
+                                            </li>
+                                         </NavLink>)
                                      })
                                  }
                              </ul>
@@ -536,35 +614,10 @@ class Home extends Component{
 
                             </div>
                         </div>
-                        <div className="home-end-declare">
-                            <div className="home-declare-container">
-                                <div className="home-declare">
-                                    <span><a href="http://www.baidu.com">华为帐号用户协议</a></span> | 
-                                    <span><a href="http://www.baidu.com">关于华为帐号与隐私的声明</a></span> | 
-                                    <span><a href="http://www.baidu.com">常见问题</a></span>
-                                </div>
-                                <div className="home-bottom-word">Copyright © 2011-2019  华为软件技术有限公司  版权所有  保留一切权利  苏B2-20070200号 | 苏ICP备09062682号-9</div>
-                            </div>
-                        </div>
+                        <CompanyMessage/>
                     </div>
                 </div>
-                <div className="home-fixed">
-                    <div><Popover content="购物车" placement="left"><a href="#"><Icon type="shopping-cart" style={{fontSize:38,color:"#ccc"}} title="购物车"/></a></Popover></div>
-                    <div><Popover content="在线客服" placement="left"><Icon type="customer-service" style={{fontSize:38,color:"#ccc"}} title="在线客服" onClick={this.showModal.bind(this)}/></Popover></div>
-                    <div><Popover content="意见反馈" placement="left"><a href="#"><Icon type="form" style={{fontSize:38,color:"#ccc"}} title="意见反馈"/></a></Popover></div>
-                    <div><Popover content="返回顶部" placement="left"> <BackTop style={{position:"absolute",left:4,bottom:8}}><Icon type="arrow-up" style={{fontSize:38,color:"#ccc"}} title="返回顶部"/></BackTop></Popover></div>
-                </div>
-                <Modal
-                title="商务合作"
-                visible={this.state.visible}
-                onOk={this.handleOk.bind(this)}
-                onCancel={this.handleCancel.bind(this)}
-                >
-                <p>联系人：陆相成</p>
-                <p>手机号：177-172-58958</p>
-                <p>邮箱：luat@openluat.com</p>
-                <p>QQ:2639962780</p>
-                </Modal>
+                <Fixed/>
             </div>
         )
     }

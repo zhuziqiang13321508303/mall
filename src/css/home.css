@@ -22,8 +22,11 @@
     font-size:16px;
     background:#fff;
     color:#6c0100;
-    float:right;
-    margin:28px 185px 0 0;
+    /* float:right;
+    margin:28px 185px 0 0; */
+    position:absolute;
+    top:28px;
+    right:10%;
 }
 .home-top-close{
     position:absolute;
@@ -38,6 +41,10 @@
     line-height:30px;
     text-align:center;
 }
+/* .home-top-image{
+    width:100%;
+    height:90px;
+} */
 /* 头部导航 */
 .top-nav{
     width:100%;
@@ -139,7 +146,7 @@
     height:12px;
     padding:2px 0;
     overflow:hidden;
-    line-height:6px;
+    line-height:10px;
     font-size:12px;
 }
 .top-nav-right a{
@@ -257,6 +264,12 @@
     height:36px;
     line-height:36px;
 }
+.top-nav-produce a{
+    color:#a4a4a4;
+}
+.top-nav-produce a:hover{
+    color:#6c0100;
+}
 .net-nav-produce{
     position:absolute;
     top:36px;
@@ -300,7 +313,7 @@
     border-radius:14px;
     background:#ff8486;
     color:#fff;
-    margin-left:45px;
+    margin-left:10px;
     color:12px;
     line-height:28px;
     text-align:center;
@@ -309,7 +322,6 @@
 }
 .home-special-two{
     background:#74c7ff;
-    margin-left:20px;
 }
 .home-middle-list{
     height:28px;
@@ -319,7 +331,7 @@
     color:#333;
 }
 .home-middle-list a{
-    margin-left:20px;
+    margin-left:10px;
 }
 .home-middle-list a:hover{
     color:#6c0100;
@@ -327,7 +339,7 @@
 
 /* 搜索框样式 */
 .home-middle-search{
-    width:320px;
+    width:300px;
     height:30px;
     border-radius:15px;
     background:#efefef;
@@ -370,10 +382,10 @@
     height:480px;
     position:relative;
 }
-.home-slide-container .home-tag-one,.home-slide-container .home-tag-two{
+.home-slide-container .home-tag-one{
     position:absolute;
     top:220px;
-    left:400px;
+    left:320px;
     background:#e1e1e1;
     width:50px;
     height:50px;
@@ -382,7 +394,15 @@
     text-align:center;
 }
 .home-slide-container .home-tag-two{
-    left:1000px;
+    position:absolute;
+    top:220px;
+    right:320px;
+    background:#e1e1e1;
+    width:50px;
+    height:50px;
+    border-radius:25px;
+    line-height:50px;
+    text-align:center;
 }
 .home-slide-container .home-tag-one:hover,.home-slide-container .home-tag-two:hover{
     background:#aaa;
@@ -391,7 +411,7 @@
     height:440px;
     position:absolute;
     top:20px;
-    left:110px;
+    left:100px;
     background:#fefefe;
     z-index:200;
     border-radius:15px;
@@ -699,12 +719,7 @@
     line-height:20px;
     text-align:center;
     font-size:14px;
-}
-.home-hot-play ul li div:first-child{
-    color:#333;
-}
-.home-hot-play ul li div:second-child{
-    color:#ccc;
+    color:#666;
 }
 .home-hot-play ul li div:last-child{
     color:#ca151e;
@@ -891,7 +906,7 @@
 /* 固定模块样式 */
 .home-fixed{
     position:fixed;
-    right:0;
+    right:20px;
     bottom:20px;
     width:44px;
     height:168px;

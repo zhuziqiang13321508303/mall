@@ -1,95 +1,69 @@
 import React,{Component} from 'react';
+import CompanyMessage from "./companyMessage.jsx";
 import '../css/orderlist.css';
-import { Steps,Modal,Icon,Input,Popconfirm,Button} from 'antd';
-
+import { Steps,Input,Button} from 'antd';
+import options from "../assets/city";
 const { Step } = Steps;
 const { TextArea } = Input;
 class Orderlist extends Component{
     constructor(props){
         super(props)
         this.state={
-            data1:{img:"#",desc:"荣耀20 PRO DXO全球第二高分 4800万全焦段AI四摄 双光学防抖 麒麟980全网通版8GB+128GB 幻夜星河",price:1299,number:2},
-            step:0,
-            visible:false,
             arr:[],
-            show:"none",
-            flag:false,
-            indexs:0,
-            lengths:false,
         }
+        this.getAddress=this.getAddress.bind(this);
     }
-
-    showModal(){
-        this.setState({
-          visible: true,
-        });
-      };
+    componentDidMount(){
+        this.getAddress();
+    }
+  
     
-      handleOk(e){
-        let obj={};
-        obj.name=this.name.state.value;
-        obj.phone=this.phone.state.value;
-        obj.address=this.address.textAreaRef.value;
-        if(!this.state.flag){
-            this.state.arr.push(obj);
-        }else{
-            this.state.arr[this.state.indexs]=obj;
-            this.setState({arr:this.state.arr});
-            console.log(this.state.arr[this.state.indexs]);
-        }
-        if(this.state.arr.length>2){
-            console.log(this.state.arr.length);
-            this.setState({lengths:true})
-        }
-        this.name.state.value="";
-        this.phone.state.value="";
-        this.address.textAreaRef.value="";
-        this.setState({
-          visible: false,
-          show:"block",
-          flag:false,
-        });
-        console.log(this.state.arr);
-      };
-    
-      handleCancel(e){
-        console.log(e);
-        this.setState({
-          visible: false,
-          flag:false,
-        });
-      };
-      //删除地址按钮
-      confirm(index){
-          let _this=this;
-          let arr1=this.state.arr;
-          arr1.splice(index,1);
-          this.setState({arr:arr1},function(){
-            if(_this.state.arr.length<=2){
-                _this.setState({lengths:false})
-                console.log(_this.state.arr.length);
+      //获取地址列表
+      getAddress(){
+        let  _this=this;
+        var url= "/api/mall/delivery";
+        var xhr = new XMLHttpRequest(); 
+        xhr.open("get", url,true);
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let body=JSON.parse(xhr.responseText).data;
+                _this.setState({arr:body})
+                console.log("fff=========",body);
+            }else if (xhr.status === 401) {
+                console.error(xhr.responseText);
+                var code = null;
+                try{
+                    code = JSON.parse(xhr.responseText)["code"];
+                    if(code==33){
+                        browserHistory.push("/login");
+                    }else{
+                        let  msg = JSON.parse(xhr.responseText)["msg"];
+                        message.error(msg,10);
+                    }
+                }catch(e){
+                    
+                }
+            }else{
+                let  msg = JSON.parse(xhr.responseText)["msg"];
+                message.error(msg,10);
             }
-          })
-          console.log(arr1);
-          console.log("你点击了删除按钮",index);
+            }
+        };
+        console.log("获取订单列表");
       }
-      cancel(){
-        console.log("你点击了取消按钮");
+      //点击删除订单按钮
+      delete(){
+          console.log("你点击了删除按钮");
       }
-      //编辑地址按钮
-      edit(index){
-          let obj=this.state.arr[index];
-          this.name.state.value=obj.name;
-          this.phone.state.value=obj.phone;
-          this.address.textAreaRef.value=obj.address;
-          this.setState({flag:true,indexs:index})
-          this.showModal();
-          console.log("你点击了编辑地址按钮",index,obj);
-      }
+     //点击进入支付按钮
+     payMoney(){
+         console.log("你点击了进入支付按钮");
+     }
+      
+     
     render(){
-        let _this=this;
-        console.log("又刷新了一次");
-        let styles=this.state.lengths?{position:"absolute",top:54,right:180,width:146,height:30,lineHeight:"30px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"}:{width:350,height:120,lineHeight:"120px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"};
         return(
             <div className="orderlist-container">
                  <div className="orderlist-top">
@@ -99,102 +73,61 @@ class Orderlist extends Component{
                             <h2>确认订单</h2>
                         </div>
                         <div className="orderlist-top-right">
-                            <Steps current={this.state.step} size="small" progressDot>
-                                <Step title="填写核对订单" className="cart-top-step"/>
-                                <Step title="成功提交订单" className="cart-top-step"/>
-                            </Steps>
+                        <Steps current={2} size="small">
+                            <Step title="完成" description="我的购物车" />
+                            <Step title="完成" description="预览订单" />
+                            <Step title="执行中" description="成功提交订单" />
+                        </Steps>
                         </div>
                     </div>
                 </div>
-
-                <div className="orderlist-address">
-                    <div className="orderlist-address-container">
-                        <div className="orderlist-address-input" style={{display:this.state.show}}>
-                            <ul>
-                                {
-                                    this.state.arr.map((item,index)=>{
-                                        console.log(item);
-                                     return (<li key={index}>
-                                            <div>
-                                                <span>{item.name}</span>
+                <div className="orderlist-tip">
+                    <div className="orderlist-tip-container">
+                        <span>收货地址</span>
+                        <span>产品名称</span>
+                        <span>数量</span>
+                        <span>价格</span>
+                    </div>
+                </div>
+               <div className="orderlist-play">
+                    <div className="orderlist-play-container">
+                            {
+                                this.state.arr.map((item,index)=>{
+                                    return(
+                                        <div key={index}>
+                                            <div className="orderlist-play-message">
+                                                <span>{item.recipient}</span>
                                                 <span>{item.phone}</span>
+                                                <span>{item.address}</span> 
                                             </div>
-                                            <p>{item.address}</p>
-                                            <span>
-                                                <i onClick={this.edit.bind(this,index)}>
-                                                    <Icon type="edit"/>编辑</i>&nbsp;&nbsp;
-                                                <i>
-                                                    <Popconfirm
-                                                    title="确定要删除吗"
-                                                    onConfirm={this.confirm.bind(this)}
-                                                    onCancel={this.cancel.bind(this)}
-                                                    okText="Yes"
-                                                    cancelText="No"
-                                                    >
-                                                        <Icon type="delete"/>删除
-                                                    </Popconfirm>                                  
-                                                </i>
-                                            </span>
-                                        </li>)
-                                    })
-                                }
-                            </ul>
-                        </div>
-                        <div className="orderlist-new-address" onClick={this.showModal.bind(this)} style={styles}>
-                            +新增收货地址
-                        </div>
-                        <Modal
-                        title="添加地址"
-                        visible={this.state.visible}
-                        onOk={this.handleOk.bind(this)}
-                        onCancel={this.handleCancel.bind(this)}
-                        okText="保存并使用"
-                        cancelText="取消"
-                        bodyStyle={{width:600,height:200}}
-                        >
-                            <div className="orderlist-modal-content">
-                                <div><span>货主姓名:</span><Input type="text"  ref={ref=>this.name=ref}/></div>
-                                <div><span>联系电话:</span><Input type="text" ref={ref=>this.phone=ref}/></div>
-                                <div><span>收货地址:</span><Input.TextArea rows={3} ref={ref=>this.address=ref}/></div>
-                            </div>
-                        </Modal>
+                                            <div className="orderlist-play-detail">
+                                                {
+                                                    item.items.map((demo,index)=>{
+                                                        return(
+                                                            <div key={index} className="orderlist-play-details">
+                                                                <span>{demo.product}</span>
+                                                                <span>{demo.amount}</span>
+                                                                <span>{demo.price}</span>
+                                                                <button onClick={this.delete.bind(this,item.id)} className="orderlist-delete">删除</button>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                            
+                                        </div>
+                                    )
+                                })
+                            }
                     </div>
-                </div>
-
-                <div className="orderlist-product-list">
-                    <div className="orderlist-product-container">
-                        <div className="orderlist-detail-message">
-                            <img src={this.state.data1.img}/>
-                            <p>{this.state.data1.desc}</p>
-                            <span>X{this.state.data1.number}</span>
-                            <span>￥{this.state.data1.number*this.state.data1.price}</span>
-                        </div>
-                        <div className="orderlist-cheap-ticket">
-                            <div className="orderlist-ticket-left">
-                                <span>优惠与抵用</span>
-                                <span>仅适用于自营实物商品</span>
-                            </div>
-                            <div className="orderlist-ticket-right">
-                                <p>商品金额{}</p>
-                                <p>运费{}</p>
-                                <p>优惠金额{}</p>
-                                <p>结算金额{}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="orderlist-count">
-                    <div className="orderlist-count-container">
-                        <div className="orderlist-data-all">
-                            <div>
-                                <div>应付总额:{this.state.data1.number*this.state.data1.price}</div>
-                                <div>可获得积分:{140}</div>
-                            </div>
-                            <div className="orderlist-address-again">diubvjhfubj</div>
-                            <Button>提交订单</Button>
-                        </div>
-                    </div>
-                </div>
+               </div>
+                <div className="orderlist-submit">
+                   <div className="orderlist-submit-container">
+                            
+                            <Button onClick={this.payMoney.bind(this)} type="primary">进入支付页面</Button>
+                   </div>
+                </div>  
+                <CompanyMessage/>
             </div>
         )
     }

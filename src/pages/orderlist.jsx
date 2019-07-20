@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import CompanyMessage from "./companyMessage.jsx";
+import TopMessage from "./topMessage.jsx";
 import '../css/orderlist.css';
 import { Steps,Input,Button} from 'antd';
+import Tables from "./orderdisplay.jsx";
 import options from "../assets/city";
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -11,52 +13,52 @@ class Orderlist extends Component{
         this.state={
             arr:[],
         }
-        this.getAddress=this.getAddress.bind(this);
+        //this.getAddress=this.getAddress.bind(this);
     }
     componentDidMount(){
-        this.getAddress();
+        //this.getAddress();
     }
   
     
       //获取地址列表
-      getAddress(){
-        let  _this=this;
-        var url= "/api/mall/delivery";
-        var xhr = new XMLHttpRequest(); 
-        xhr.open("get", url,true);
-        xhr.send();
-        xhr.onreadystatechange = function(){
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                let body=JSON.parse(xhr.responseText).data;
-                _this.setState({arr:body})
-                console.log("fff=========",body);
-            }else if (xhr.status === 401) {
-                console.error(xhr.responseText);
-                var code = null;
-                try{
-                    code = JSON.parse(xhr.responseText)["code"];
-                    if(code==33){
-                        browserHistory.push("/login");
-                    }else{
-                        let  msg = JSON.parse(xhr.responseText)["msg"];
-                        message.error(msg,10);
-                    }
-                }catch(e){
+    //   getAddress(){
+    //     let  _this=this;
+    //     var url= "/api/mall/delivery";
+    //     var xhr = new XMLHttpRequest(); 
+    //     xhr.open("get", url,true);
+    //     xhr.send();
+    //     xhr.onreadystatechange = function(){
+    //         if (xhr.readyState === XMLHttpRequest.DONE) {
+    //         if (xhr.status === 200) {
+    //             let body=JSON.parse(xhr.responseText).data;
+    //             _this.setState({arr:body})
+    //             console.log("fff=========",body);
+    //         }else if (xhr.status === 401) {
+    //             console.error(xhr.responseText);
+    //             var code = null;
+    //             try{
+    //                 code = JSON.parse(xhr.responseText)["code"];
+    //                 if(code==33){
+    //                     browserHistory.push("/login");
+    //                 }else{
+    //                     let  msg = JSON.parse(xhr.responseText)["msg"];
+    //                     message.error(msg,10);
+    //                 }
+    //             }catch(e){
                     
-                }
-            }else{
-                let  msg = JSON.parse(xhr.responseText)["msg"];
-                message.error(msg,10);
-            }
-            }
-        };
-        console.log("获取订单列表");
-      }
+    //             }
+    //         }else{
+    //             let  msg = JSON.parse(xhr.responseText)["msg"];
+    //             message.error(msg,10);
+    //         }
+    //         }
+    //     };
+    //     console.log("获取订单列表");
+    //   }
       //点击删除订单按钮
-      delete(){
-          console.log("你点击了删除按钮");
-      }
+    //   delete(){
+    //       console.log("你点击了删除按钮");
+    //   }
      //点击进入支付按钮
      payMoney(){
          console.log("你点击了进入支付按钮");
@@ -66,6 +68,11 @@ class Orderlist extends Component{
     render(){
         return(
             <div className="orderlist-container">
+                 <div className="top-nav">
+                    <div className="top-nav-container">
+                        <TopMessage/>
+                    </div>
+                </div>
                  <div className="orderlist-top">
                     <div className="orderlist-top-container">
                         <div className="orderlist-top-left">
@@ -108,7 +115,7 @@ class Orderlist extends Component{
                                                                 <span>{demo.product}</span>
                                                                 <span>{demo.amount}</span>
                                                                 <span>{demo.price}</span>
-                                                                <button onClick={this.delete.bind(this,item.id)} className="orderlist-delete">删除</button>
+                                                                {/* <button onClick={this.delete.bind(this,item.id)} className="orderlist-delete">删除</button> */}
                                                             </div>
                                                         )
                                                     })
@@ -119,6 +126,11 @@ class Orderlist extends Component{
                                     )
                                 })
                             }
+                    </div>
+               </div>
+               <div className="orderlist-display">
+                    <div className="orderlist-display-container">
+                            <Tables/>
                     </div>
                </div>
                 <div className="orderlist-submit">

@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
-import CompanyMessage from "./companyMessage.jsx";
 import '../css/previewlist.css';
 import { Steps,Modal,Icon,Input,Popconfirm,Button,Cascader,message,Form,Checkbox,Select,Tooltip,Row,Col,AutoComplete} from 'antd';
 import options from "../assets/city";
+import TopMessage from "./topMessage.jsx";
+import CompanyMessage from "./companyMessage.jsx";
 import $ from 'jquery';
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -96,7 +97,7 @@ class Preview extends Component{
                     self.setState({
                         datas:res.data,
                         cartdata:res.data.items,
-                    },()=>console.log(self.state.datas))
+                    },()=>console.log(self.state.datas,res.data.items))
                     }
                 }
                 var xhr=new XMLHttpRequest()
@@ -390,7 +391,7 @@ class Preview extends Component{
             var xhr=new XMLHttpRequest()
             let data=new FormData()
             data.append('payment_type',0)
-            data.append('products',JSON.stringify(self.state.cart_items))
+            data.append('products',JSON.stringify(self.state.cart_items));
             data.append('recipient',this.state.recipients)
             data.append('phone',this.state.phones)
             data.append('province',this.state.provinces)
@@ -427,12 +428,21 @@ class Preview extends Component{
           })
           console.log("你点击了地址改变按钮",index,this.state.addressList[index],$("#list"), $("#list li").eq(index));
         }
+        //删除预览商品按钮
+        // deleteId(){
+
+        // }
         render(){
             let _this=this;
             console.log("又刷新了一次");
-            let styles=this.state.lengths?{position:"absolute",top:54,right:180,width:146,height:30,lineHeight:"30px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"}:{width:240,height:120,lineHeight:"120px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"};
+            let styles=this.state.lengths?{position:"absolute",top:10,right:180,width:146,height:30,lineHeight:"30px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"}:{width:240,height:120,lineHeight:"120px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"};
             return(
                 <div>
+                    <div className="top-nav">
+                        <div className="top-nav-container">
+                            <TopMessage/>
+                        </div>
+                    </div>
                     <div className="previewlist-top">
                         <div className="previewlist-top-container">
                             <div className="previewlist-top-left">
@@ -487,7 +497,6 @@ class Preview extends Component{
                             <Modal
                             title="收货信息"
                             visible={this.state.visible}
-                            // onOk={this.handleOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
                             footer={null}
                             >
@@ -506,6 +515,7 @@ class Preview extends Component{
                                                     <p>{item.desc}vjfdvhbfgjbn</p>
                                                     <span>X{item.amount}</span>
                                                     <span>￥{item.amount*item.price}</span>
+                                                    {/* <button onClick={this.deleteId.bind(this)}>删除</button> */}
                                                 </div>
                                             )
                                     })

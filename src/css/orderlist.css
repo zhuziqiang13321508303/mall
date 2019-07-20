@@ -126,6 +126,17 @@
 .orderlist-play-message span:last-child{
     width:200px;
 }
+.orderlist-display{
+    width:100%;
+    min-height:500px;
+}
+.orderlist-display-container{
+    width:90%;
+    margin:0 auto;
+    min-height:500px;
+    min-width:960px;
+    background:yellow;
+}
 /* 订单按钮 */
 .orderlist-submit{
     width:100%;

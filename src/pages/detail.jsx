@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { Breadcrumb,InputNumber,Button,message,Modal,Popconfirm} from 'antd';
 import CompanyMessage from "./companyMessage.jsx";
 import Fixed from "./fixed.jsx";
+import TopMessage from "./topMessage.jsx";
 import Img from "./img.jsx";
 import '../css/detail.css';
 class Detail extends Component{
@@ -135,6 +136,11 @@ class Detail extends Component{
         const { minImg, maxImg } = this.state;
         return(
             <div className="detail-container">
+                <div className="top-nav">
+                    <div className="top-nav-container">
+                        <TopMessage/>
+                    </div>
+                </div>
                 <div className="detail-bread">
                     <div className="detail-bread-container">
                         <Breadcrumb separator=">">

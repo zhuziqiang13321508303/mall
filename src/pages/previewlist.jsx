@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import CompanyMessage from "./companyMessage.jsx";
+import TopMessage from "./topMessage.jsx";
 import '../css/previewlist.css';
 import { Steps,Modal,Icon,Input,Popconfirm,Button,Cascader,message,Form,Checkbox,Select,Tooltip,Row,Col,AutoComplete} from 'antd';
 import options from "../assets/city";
@@ -436,6 +437,11 @@ class PreviewList extends Component{
             let styles=this.state.lengths?{position:"absolute",top:54,right:180,width:146,height:30,lineHeight:"30px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"}:{width:240,height:120,lineHeight:"120px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"};
             return(
                 <div>
+                    <div className="top-nav">
+                        <div className="top-nav-container">
+                            <TopMessage/>
+                        </div>
+                    </div>
                     <div className="previewlist-top">
                         <div className="previewlist-top-container">
                             <div className="previewlist-top-left">

@@ -41,6 +41,7 @@
 .previewlist-address{
     width:100%;
     background:#fff;
+    position:relative;
 }
 .previewlist-address-container{
     width:90%;
@@ -50,7 +51,6 @@
     box-sizing:border-box;
     padding:40px 40px 16px;
     display:flex;
-    position:realtive;
 }
 .previewlist-address-display{
     width:120px;
@@ -58,7 +58,7 @@
     text-align:center;
     line-height:30px;
     position:absolute;
-    top:55px;
+    top:11px;
     right:333px;
 }
 .previewlist-address-input ul li{

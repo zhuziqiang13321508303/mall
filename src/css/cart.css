@@ -69,6 +69,7 @@
     width:90%;
     margin:0 auto;
     min-width:960px;
+    min-height:500px;
 }
 .cart-product-list ul li{
     width:100%;

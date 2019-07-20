@@ -1,9 +1,9 @@
 import React,{ Component} from "react";
 import Fixed from "./fixed.jsx";
 import CompanyMessage from "./companyMessage.jsx";
+import TopMessage from "./topMessage.jsx";
 import '../css/cart.css';
-import { Steps,Checkbox,InputNumber,Popconfirm,message,Tooltip,Button,Icon} from 'antd';
-
+import { Steps,Checkbox,InputNumber,Popconfirm,message,Tooltip,Button,Icon,Empty} from 'antd';
 const { Step } = Steps;
 class Cart extends Component{
     constructor(props){
@@ -21,6 +21,7 @@ class Cart extends Component{
             zongOne:0,
             datas:{},
             allMounts:0,
+            empty:"block",
         }
     }
     // 全选按钮
@@ -34,11 +35,8 @@ class Cart extends Component{
             
             let arr=this.state.arr1;
             for(let j=0;j<arr.length;j++){
-                // ids.push(arr[j].id);
-                // this.setState({id:ids}) 
                 let obj={};
                 obj.id=arr[j].id;
-                // obj.amount=arr[j].amount;
                 ids.push(obj);
             }
             this.setState({id:ids})
@@ -162,22 +160,22 @@ class Cart extends Component{
         message.error('你点击了取消按钮');
       }
       //批量删除按钮
-      onClick(){
-             var arr2=this.state.arr1.filter((item)=>{
-            return item.selected===true
-        });
-        if(arr2.length<=0){
-            alert("请选择要删除的商品")
-        }else{
-            var arr3=this.state.arr1.filter((item)=>{
-                return item.selected===false
-            });
-            this.setState({arr1:arr3})
-            console.log(arr3,arr2);
-            alert("删除成功")
-            this.state.checkall=false;
-        }
-      }
+    //   onClick(){
+    //          var arr2=this.state.arr1.filter((item)=>{
+    //         return item.selected===true
+    //     });
+    //     if(arr2.length<=0){
+    //         alert("请选择要删除的商品")
+    //     }else{
+    //         var arr3=this.state.arr1.filter((item)=>{
+    //             return item.selected===false
+    //         });
+    //         this.setState({arr1:arr3})
+    //         console.log(arr3,arr2);
+    //         alert("删除成功")
+    //         this.state.checkall=false;
+    //     }
+    //   }
       //总金额计算
       zong(){
         var zong=0;
@@ -209,7 +207,11 @@ class Cart extends Component{
                 return item.id
             })
             console.log("cccccaaa====",id_arr)
-            this.props.history.push(`/previewlist/${id_arr}`)
+            if(checked_arr.length===0){
+                alert("您还未选择任何商品");
+            }else{
+                this.props.history.push(`/previewlist/${id_arr}`)
+            }
             console.log("你点击了结算按钮");
         }
         
@@ -235,7 +237,13 @@ class Cart extends Component{
                     allMount+=body[i].amount
                 }
                 _this.setState({arr1:body,allMounts:allMount});
-                console.log("eee=========",body,allMount);
+                if(body.length==0){
+                    _this.setState({empty:"block"})
+                }if(body.length!=0){
+                    console.log(body.length);
+                    _this.setState({empty:"none"})
+                }
+                console.log("eee=========",body,allMount,body.length);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -280,6 +288,11 @@ class Cart extends Component{
         let _this=this;
         return(
             <div className="cart-container">
+                 <div className="top-nav">
+                    <div className="top-nav-container">
+                        <TopMessage/>
+                    </div>
+                </div>
                 <div className="cart-top">
                     <div className="cart-top-container">
                         <div className="cart-top-left">
@@ -308,6 +321,7 @@ class Cart extends Component{
                         </div>
                 </div>
                 <div className="cart-product-list">
+                <Empty description="您的购物车是空的，请赶紧选购吧" style={{display:this.state.empty,marginTop:185}}/>
                     <ul>
                         {
                             _this.state.arr1.map((item,index)=>{
@@ -340,16 +354,9 @@ class Cart extends Component{
                     <div className="cart-all-count">
                         <div className="cart-all-left">
                             <Checkbox onChange={this.onChange.bind(this)} checked={this.state.checkall}>全选</Checkbox>
-                            <span
-                                            //title="您确认要删除该商品吗？"
-                                            // onConfirm={this.confirm2.bind(this)}
-                                            // onCancel={this.cancel2.bind(this)}
-                                            // okText="是"
-                                            // cancelText="否"
-                                            onClick={this.onClick.bind(this)}
-                                        >
-                                        删除
-                            </span>
+                            {/* <span onClick={this.onClick.bind(this)}>
+                                删除
+                            </span> */}
                         </div>
                     
                         <div className="cart-all-right">

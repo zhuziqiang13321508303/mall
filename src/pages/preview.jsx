@@ -4,6 +4,7 @@ import { Steps,Modal,Icon,Input,Popconfirm,Button,Cascader,message,Form,Checkbox
 import options from "../assets/city";
 import TopMessage from "./topMessage.jsx";
 import CompanyMessage from "./companyMessage.jsx";
+import imgLogo from "../assets/images/hezhou.jpg";
 import $ from 'jquery';
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -446,7 +447,7 @@ class Preview extends Component{
                     <div className="previewlist-top">
                         <div className="previewlist-top-container">
                             <div className="previewlist-top-left">
-                                <img src="#"/>
+                                <img src={imgLogo}/>
                                 <h2>预览订单</h2>
                             </div>
                             <div className="previewlist-top-right">

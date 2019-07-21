@@ -2,6 +2,9 @@ import React,{ Component} from "react";
 import Fixed from "./fixed.jsx";
 import CompanyMessage from "./companyMessage.jsx";
 import TopMessage from "./topMessage.jsx";
+import Action from '../reds/Action';
+import Store from '../reds/Store';
+import imgLogo from "../assets/images/hezhou.jpg";
 import '../css/cart.css';
 import { Steps,Checkbox,InputNumber,Popconfirm,message,Tooltip,Button,Icon,Empty} from 'antd';
 const { Step } = Steps;
@@ -236,7 +239,11 @@ class Cart extends Component{
                 for(let i=0;i<body.length;i++){
                     allMount+=body[i].amount
                 }
-                _this.setState({arr1:body,allMounts:allMount});
+                  
+                _this.setState({arr1:body,allMounts:allMount},()=>{
+                    Store.dispatch(Action.addItem(_this.state.allMounts));
+                    console.log("bbbb===bbb==cccc===ggg",_this.state.allMounts);
+                });
                 if(body.length==0){
                     _this.setState({empty:"block"})
                 }if(body.length!=0){
@@ -296,7 +303,7 @@ class Cart extends Component{
                 <div className="cart-top">
                     <div className="cart-top-container">
                         <div className="cart-top-left">
-                            <img src="#"/>
+                            <img src={imgLogo}/>
                             <h2>我的购物车</h2>
                         </div>
                         <div className="cart-top-right">

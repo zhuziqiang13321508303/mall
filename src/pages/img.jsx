@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-// import huawei from '../assets/images/huawei.jpg';
-// import ad from '../assets/images/ad.jpg';
-// import fl from '../assets/images/fl_bg.png';
-// import left from '../assets/images/leftbg.jpg';
-// import logo from '../assets/images/logo.jpg';
-// import "../css/img.css";
+import $ from "jquery";
 class Img extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +8,7 @@ class Img extends Component {
        * 图片放大镜参数列表
        * 组件宽高必须大于鼠标悬停小方块 ！！！
        */
+      dataImg:[],
       params: {
         // 放大倍数
         scale: 4,
@@ -44,9 +40,10 @@ class Img extends Component {
         },
         imgContainerBelow:{
             width:"400px",
-            height:"60px",
+            height:"90px",
             display:"flex",
-            justifyContent:"space-between",
+            justifyContent:"space-around",
+            alignItems:"center",
         },
         // 鼠标悬停小方块样式
         mouseBlock: {
@@ -105,7 +102,6 @@ class Img extends Component {
    */
   // 组件初始化
   componentDidMount() {
-    // this.initParam();
     this.updataImg(this.props);
     this.setState({minImg:"",maxImg:""})
   }
@@ -113,6 +109,46 @@ class Img extends Component {
   // props 变化时更新
   componentWillReceiveProps(nextProps) {
     this.updataImg(nextProps);
+    let _this=this;
+    if(nextProps.transids){
+      var url= "/api/mall/product/"+nextProps.transids;
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url,true);
+      xhr.send();
+      xhr.onreadystatechange = function(){
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+              let body=JSON.parse(xhr.responseText).data.images;
+              let bodySole={};
+              bodySole.url=nextProps.minImg;
+              let arr=[];
+              arr.unshift(bodySole);
+              let arrAll=arr.concat(body);
+              _this.setState({dataImg:arrAll});
+              $("#img img").eq(0).css({"border":"1px solid red"});
+              console.log("eee=========",body,bodySole);
+          }else if (xhr.status === 401) {
+              console.error(xhr.responseText);
+              var code = null;
+              try{
+                  code = JSON.parse(xhr.responseText)["code"];
+                  if(code==33){
+                      browserHistory.push("/login");
+                  }else{
+                      let  msg = JSON.parse(xhr.responseText)["msg"];
+                      message.error(msg,10);
+                  }
+              }catch(e){
+                  
+              }
+          }else{
+              let  msg = JSON.parse(xhr.responseText)["msg"];
+              message.error(msg,10);
+          }
+          }
+      };
+    }
+    console.log("bbb===ccccc",nextProps,nextProps.transids);
   }
 
   /**
@@ -184,24 +220,11 @@ class Img extends Component {
   handleImageErrored() {
     this.setState({ imgLoad: false });
   }
-  // mouseEnter1(){
-  //   this.setState({minImg:this.props.data[0]?this.props.data[0].url:'',maxImg:this.props.data[0]?this.props.data[0].url:''})
-  // }
-  // mouseEnter2(){
-  //   this.setState({minImg:this.props.data[1]?this.props.data[1].url:'',maxImg:this.props.data[1]?this.props.data[1].url:''})
-  // }
-  // mouseEnter3(){
-  //   this.setState({minImg:this.props.data[2]?this.props.data[2].url:'',maxImg:this.props.data[2]?this.props.data[2].url:''})
-  // }
-  // mouseEnter4(){
-  //   this.setState({minImg:this.props.data[3]?this.props.data[3].url:'',maxImg:this.props.data[3]?this.props.data[3].url:''})
-  // }
+  mouseEnters(index){
+    this.setState({minImg:this.state.dataImg[index].url,maxImg:this.state.dataImg[index].url});
+    $("#img img").eq(index).css({"border":"1px solid red"}).siblings().css({"border":"1px solid #333"});
+  }
   render() {
-    console.log(this.props.data);
-    let arr=[];
-    if(this.props.data.length>0){
-        arr=this.props.data;
-    }
     const { cssStyle, magnifierOff, minImg, maxImg, imgLoad } = this.state;
     return (
       <div>
@@ -215,17 +238,12 @@ class Img extends Component {
                 />
                 {magnifierOff && <div style={cssStyle.mouseBlock} />}
             </div>
-            {/* <div style={cssStyle.imgContainerBelow} className="imgContainerBelow">
-                  <img src={this.props.data[0]?this.props.data[0].url:''} style={{width:60,height:60}} onMouseEnter={this.mouseEnter1.bind(this)}/>
-                  <img src={this.props.data[1]?this.props.data[1].url:''} style={{width:60,height:60}} onMouseEnter={this.mouseEnter2.bind(this)}/>
-                  <img src={this.props.data[2]?this.props.data[2].url:''} style={{width:60,height:60}} onMouseEnter={this.mouseEnter3.bind(this)}/>
-                  <img src={this.props.data[3]?this.props.data[3].url:''} style={{width:60,height:60}} onMouseEnter={this.mouseEnter4.bind(this)}/>
-            </div> */}
-            <div style={cssStyle.imgContainerBelow} className="imgContainerBelow">
+            <div style={cssStyle.imgContainerBelow} className="imgContainerBelow" id="img">
                 {
-                  arr.map((item,index)=>{
-                    <img src={item.url} key={index}/>
-                    console.log(item.url);
+                  this.state.dataImg.map((item,index)=>{
+                    return(
+                      <img src={item.url} key={index} style={{width:60,height:60,border:"1px solid #333",padding:5}} onMouseEnter={this.mouseEnters.bind(this,index)}/>
+                    )
                   })
                 }
             </div>

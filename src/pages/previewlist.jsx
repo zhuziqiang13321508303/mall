@@ -4,6 +4,7 @@ import TopMessage from "./topMessage.jsx";
 import '../css/previewlist.css';
 import { Steps,Modal,Icon,Input,Popconfirm,Button,Cascader,message,Form,Checkbox,Select,Tooltip,Row,Col,AutoComplete} from 'antd';
 import options from "../assets/city";
+import imgLogo from "../assets/images/hezhou.jpg";
 import $ from 'jquery';
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -445,7 +446,7 @@ class PreviewList extends Component{
                     <div className="previewlist-top">
                         <div className="previewlist-top-container">
                             <div className="previewlist-top-left">
-                                <img src="#"/>
+                                <img src={imgLogo}/>
                                 <h2>预览订单</h2>
                             </div>
                             <div className="previewlist-top-right">

@@ -14,10 +14,15 @@ class List extends Component{
             show:"none",
             arr:["none","none","none","none","none","none","none","none"],
         }
+        this.getList=this.getList.bind(this);
     }
 
     componentDidMount(){
-            let _this=this;
+        this.getList();    
+    }
+    //获取商品列表
+    getList(){
+        let _this=this;
             var url= "/api/mall/product";
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url,true);
@@ -28,9 +33,8 @@ class List extends Component{
                     let body=JSON.parse(xhr.responseText);
                     let body1=body.data;
                     _this.setState({data:body1});
-                    //console.log("eee=========",body1,_this.state.data.slice(0,8));
+                    console.log("eee=========",body1,_this.state.data.slice(0,8));
                 }else if (xhr.status === 401) {
-                    //console.error(xhr.responseText);
                     var code = null;
                     try{
                         code = JSON.parse(xhr.responseText)["code"];
@@ -49,7 +53,7 @@ class List extends Component{
                 }
               }
             };
-            //console.log("aaaa++++++======");
+            console.log("aaaa++++++======获取商品列表");
     }
     //鼠标划入
     mouseEnter(index){

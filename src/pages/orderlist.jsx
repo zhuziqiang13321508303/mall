@@ -5,6 +5,7 @@ import '../css/orderlist.css';
 import { Steps,Input,Button} from 'antd';
 import Tables from "./orderdisplay.jsx";
 import options from "../assets/city";
+import imgLogo from "../assets/images/hezhou.jpg";
 const { Step } = Steps;
 const { TextArea } = Input;
 class Orderlist extends Component{
@@ -76,7 +77,7 @@ class Orderlist extends Component{
                  <div className="orderlist-top">
                     <div className="orderlist-top-container">
                         <div className="orderlist-top-left">
-                            <img src="#"/>
+                            <img src={imgLogo}/>
                             <h2>确认订单</h2>
                         </div>
                         <div className="orderlist-top-right">

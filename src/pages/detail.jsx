@@ -3,6 +3,8 @@ import { Breadcrumb,InputNumber,Button,message,Modal,Popconfirm} from 'antd';
 import CompanyMessage from "./companyMessage.jsx";
 import Fixed from "./fixed.jsx";
 import TopMessage from "./topMessage.jsx";
+import Action from '../reds/Action';
+import Store from '../reds/Store';
 import Img from "./img.jsx";
 import '../css/detail.css';
 class Detail extends Component{
@@ -18,47 +20,86 @@ class Detail extends Component{
             ids:[],
             id:'',
             number:1,
-            imageData:[],
+            infos:'',
         }
         this.showModal=this.showModal.bind(this);
+        this.changeNumber=this.changeNumber.bind(this);
     }
 
     componentDidMount(){
         let _this=this;
-            var url= "/api/mall/product/"+this.props.match.params.id;
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url,true);
-            xhr.send();
-            xhr.onreadystatechange = function(){
-              if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    let body=JSON.parse(xhr.responseText).data;
-                     _this.setState({data1:body,minImg:body.image,maxImg:body.image,id:body.id,number:1,imageData:body.images});
-                    console.log("eee=========",body);
-                }else if (xhr.status === 401) {
-                    console.error(xhr.responseText);
-                    var code = null;
-                    try{
-                        code = JSON.parse(xhr.responseText)["code"];
-                        if(code==33){
-                            browserHistory.push("/login");
-                        }else{
-                            let  msg = JSON.parse(xhr.responseText)["msg"];
-                            message.error(msg,10);
-                        }
-                    }catch(e){
-                      
+        var url= "/api/mall/product/"+this.props.match.params.id;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url,true);
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let body=JSON.parse(xhr.responseText).data;
+                    _this.setState({data1:body,minImg:body.image,maxImg:body.image,id:body.id,number:1});
+                console.log("eee=========",body);
+            }else if (xhr.status === 401) {
+                console.error(xhr.responseText);
+                var code = null;
+                try{
+                    code = JSON.parse(xhr.responseText)["code"];
+                    if(code==33){
+                        browserHistory.push("/login");
+                    }else{
+                        let  msg = JSON.parse(xhr.responseText)["msg"];
+                        message.error(msg,10);
                     }
-                }else{
-                  let  msg = JSON.parse(xhr.responseText)["msg"];
-                    message.error(msg,10);
+                }catch(e){
+                    
                 }
-              }
-            };
-            console.log("aaaa++++++======");
-            this.onChange();
+            }else{
+                let  msg = JSON.parse(xhr.responseText)["msg"];
+                message.error(msg,10);
+            }
+            }
+        };
+        console.log("aaaa++++++======");
+        this.changeNumber();
     }
-
+     //调取购物车中商品
+     changeNumber(){
+        let _this=this;
+        var url= "/api/mall/cart_item";
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url,true);
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let body=JSON.parse(xhr.responseText).data;
+                let allMount=0;
+                for(let i=0;i<body.length;i++){
+                    allMount+=body[i].amount
+                }
+                 _this.setState({infos:allMount});
+                console.log("eee=========fffffff",body);
+            }else if (xhr.status === 401) {
+                console.error(xhr.responseText);
+                var code = null;
+                try{
+                    code = JSON.parse(xhr.responseText)["code"];
+                    if(code==33){
+                        browserHistory.push("/login");
+                    }else{
+                        let  msg = JSON.parse(xhr.responseText)["msg"];
+                        message.error(msg,10);
+                    }
+                }catch(e){
+                    
+                }
+            }else{
+                let  msg = JSON.parse(xhr.responseText)["msg"];
+                message.error(msg,10);
+            }
+            }
+        };
+        console.log("aaaa++++++=====oooooopppp=");
+    }
     //改变数量
     onChange(value){ 
         this.setState({number:value});
@@ -156,7 +197,7 @@ class Detail extends Component{
                 </div>
                 <div className="detail-main">
                     <div className="detail-main-container">
-                        <Img minImg={minImg} maxImg={maxImg} data={this.state.imageData}/>  
+                        <Img minImg={minImg} maxImg={maxImg} transids={this.props.match.params.id}/>  
                         <div className="detail-description">
                             <p>{this.state.data1.desc}vcufdvbfhdvb</p>
                             <div className="detail-price">
@@ -189,10 +230,14 @@ class Detail extends Component{
                             </div> 
                         </div>  
                     </div>
+                    {/* <div className="detail-relatve">
+                        <div className="detail-relatve-container">
+                            <h2>相关推荐</h2>
+                        </div>
+                    </div> */}
                         <CompanyMessage/>
-                        <Fixed/>
-                    </div> 
-                    
+                        <Fixed number={this.state.infos}/>
+                    </div>   
             </div>
         )
     }

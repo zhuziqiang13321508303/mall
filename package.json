@@ -34,6 +34,7 @@
     "react-dom": "npm:@hot-loader/react-dom",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
+    "redux": "^4.0.4",
     "swiper": "^4.5.0"
   }
 }

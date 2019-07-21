@@ -71,10 +71,12 @@ class Tables extends Component{
             for(let i=0;i<arrOne.length;i++){
                 for (let j=0;j<arrOne[i].items.length;j++){
                     data.push({key:Math.random(),
+                        name:arrOne[i].recipient,
+                        phone:arrOne[i].phone,
+                        address:arrOne[i].address,
                         productname:arrOne[i].items[j].product,
                         price:arrOne[i].items[j].price,
                         amount:arrOne[i].items[j].amount,
-                        // payment_status:records[i].payment_status==0?'未付款':'已付款',
                         id:arrOne[i].id-0
                     })                
                 }

@@ -5,6 +5,7 @@ export default class Fixed extends Component{
         super(props)
         this.state={
             visible:false,
+            numbers:0,
         }
     }
     showModal(){
@@ -22,8 +23,15 @@ export default class Fixed extends Component{
           visible: false,
         });
       };
+      // componentWillReceiveProps(value){
+      //   if(value.number){
+      //     this.setState({numbers:value.number},()=>{
+      //       this.props.translateNumber(value.number);
+      //       console.log("bbbbbbbbb========");
+      //     }); 
+      //   }
+      // }
     render(){
-      console.log(this.props.number);
         return(
             <div className="home-fixed">
             <div><Popover content="购物车" placement="left"><a href="#/cart"><Badge count={this.props.number}><Icon type="shopping-cart" style={{fontSize:38,color:"#ccc"}} title="购物车"/></Badge></a></Popover></div>

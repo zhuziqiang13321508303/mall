@@ -4,6 +4,9 @@ import {NavLink} from "react-router-dom";
 import CompanyMessage from "./companyMessage.jsx";
 import Fixed from "./fixed.jsx";
 import TopMessage from "./topMessage.jsx";
+import Action from '../reds/Action';
+import Store from '../reds/Store';
+import imgLogo from "../assets/images/hezhou.jpg";
 import '../css/home.css';
 import $ from "jquery";
 class Home extends Component{
@@ -62,10 +65,12 @@ class Home extends Component{
         arr16:[],
         arrCheap:[],
         arrBanner:[],
+        banner:"none",
+        infos:'',
         }
         this.recommend=this.recommend.bind(this);
         this.get=this.get.bind(this);
-        //this.hotSell=this.hotSell.bind(this);
+        this.changeNumber=this.changeNumber.bind(this);
     }
     //设定定时器
     componentDidMount(){
@@ -87,21 +92,26 @@ class Home extends Component{
         this.recommend(2);
         this.recommend(1);
         this.recommend(0);
-        //this.hotSell();
         this.get();
+        this.changeNumber();
     }
-    //获取产品列表
-    get(){
-        let  _this=this;
-        var url= "/api/mall/product";
-        var xhr = new XMLHttpRequest(); 
-        xhr.open("get", url,true);
+    //调取购物车中商品
+    changeNumber(){
+        let _this=this;
+        var url= "/api/mall/cart_item";
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url,true);
         xhr.send();
         xhr.onreadystatechange = function(){
             if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
-                console.log("fff=========eeeeeeee",body);
+                let allMount=0;
+                for(let i=0;i<body.length;i++){
+                    allMount+=body[i].amount
+                }
+                 _this.setState({infos:allMount});
+                console.log("eee=========fffffff",body);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -122,7 +132,41 @@ class Home extends Component{
             }
             }
         };
-        console.log("获取精品推荐列表");
+        console.log("aaaa++++++=====oooooopppp=");
+    }
+    //获取产品列表
+    get(){
+        let  _this=this;
+        var url= "/api/mall/product";
+        var xhr = new XMLHttpRequest(); 
+        xhr.open("get", url,true);
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let body=JSON.parse(xhr.responseText).data;
+                //console.log("fff=========eeeeeeee",body);
+            }else if (xhr.status === 401) {
+                console.error(xhr.responseText);
+                var code = null;
+                try{
+                    code = JSON.parse(xhr.responseText)["code"];
+                    if(code==33){
+                        browserHistory.push("/login");
+                    }else{
+                        let  msg = JSON.parse(xhr.responseText)["msg"];
+                        message.error(msg,10);
+                    }
+                }catch(e){
+                    
+                }
+            }else{
+                let  msg = JSON.parse(xhr.responseText)["msg"];
+                message.error(msg,10);
+            }
+            }
+        };
+        //console.log("获取精品推荐列表");
     }
     //轮播图产品调用接口
     //热销产品接口调用
@@ -147,19 +191,19 @@ class Home extends Component{
                    _this.setState({arrHot:body})
                }
                if(value===1){
-                    _this.setState({arrCheap:body,arrBanner:body},()=>{
-                        console.log("yyyyyyyyy======",_this.state.arrCheap,_this.state.arrCheap[0].image);
+                    _this.setState({arrCheap:body,arrBanner:body,banner:"block"},()=>{
+                        //console.log("yyyyyyyyy======",_this.state.arrCheap,_this.state.arrCheap[0].image);
                     })
                }
                if(value===0){
                    _this.setState({
                         arr16:body
                    })
-                   console.log("ooooo===",body);
+                   //console.log("ooooo===",body);
                }
-                console.log("fff=========",body);
+                //console.log("fff=========",body);
             }else if (xhr.status === 401) {
-                console.error(xhr.responseText);
+                //console.error(xhr.responseText);
                 var code = null;
                 try{
                     code = JSON.parse(xhr.responseText)["code"];
@@ -178,7 +222,7 @@ class Home extends Component{
             }
             }
         };
-        console.log("获取精品推荐列表");
+        //console.log("获取精品推荐列表");
     }
    //开启定时器
    mouseLeave9(){
@@ -261,7 +305,6 @@ class Home extends Component{
         this.setState({arr13:arr});
         console.log("你点击了获取right数据");
     }
-    
     render(){
         const showHide=this.state.showHide;
         const _this=this;
@@ -282,7 +325,7 @@ class Home extends Component{
                 <div className="home-middle-nav">
                     <div className="home-middle-container">
                         <div className="home-middle-left">
-                            <img src="#" className="home-middle-navimg"/>
+                            <img src={imgLogo} className="home-middle-navimg"/>
                             <div className="home-special-one"><a href="#">华为专区</a></div>
                             <div className="home-special-two"><a href="#">荣耀专区</a></div>
                             <div className="home-middle-list">
@@ -299,11 +342,11 @@ class Home extends Component{
                         </div>
                     </div>
                 </div>
-                <div className="home-slide-show">
+                <div className="home-slide-show" style={{display:this.state.banner}}>
                     <div className="home-slide-container">
                         <Carousel autoplay ref={el =>this.slider = el}>
                             <div>
-                               <img src={this.state.arrBanner[0]?this.state.arrBanner[0].image:''}/>
+                               <NavLink><img src={this.state.arrBanner[0]?this.state.arrBanner[0].image:''}/></NavLink>
                             </div>
                             <div>
                                 <img src={this.state.arrBanner[0]?this.state.arrBanner[0].image:''}/>
@@ -528,7 +571,7 @@ class Home extends Component{
                         <CompanyMessage/>
                     </div>
                 </div>
-                <Fixed/>
+                <Fixed number={this.state.infos}/>
             </div>
         )
     }

@@ -22,6 +22,7 @@ import PreviewList from './pages/previewlist.jsx';
 import Preview from './pages/preview.jsx';
 import Email from './pages/email.jsx';
 import CheapProduct from './pages/cheapProduct.jsx';
+import ProductClass from './pages/productClass.jsx';
 class App extends React.Component{
     render(){
         return (
@@ -47,6 +48,7 @@ class App extends React.Component{
                         <Route path="/preview/:amount" component={Preview}></Route>
                         <Route path="/email" component={Email}></Route>
                         <Route path="/cheapproduct/:1" component={CheapProduct}></Route>
+                        <Route path="/productclass" component={ProductClass}></Route>
                         <Redirect to='/home'/>
                     </Switch>
                     </div>

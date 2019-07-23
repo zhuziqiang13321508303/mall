@@ -13,6 +13,7 @@ import Message from "./pages/message.jsx"
 import Register from "./pages/register.jsx"
 import Notice from "./pages/notice.jsx"
 import Reset from "./pages/pswreset.jsx"
+import Payment from "./pages/payment.jsx"
 import Home from './pages/home.jsx';
 import Detail from './pages/detail.jsx';
 import Cart from './pages/cart.jsx';
@@ -23,6 +24,7 @@ import Preview from './pages/preview.jsx';
 import Email from './pages/email.jsx';
 import CheapProduct from './pages/cheapProduct.jsx';
 import ProductClass from './pages/productClass.jsx';
+import SearchResult from './pages/searchResult.jsx';
 class App extends React.Component{
     render(){
         return (
@@ -32,6 +34,7 @@ class App extends React.Component{
                         <Route path="/login" component={Login}></Route>
                         <Route path="/register" component={Register}></Route>
                         <Route path="/order" component={Order}></Route>
+                        <Route path="/payment/:delivery_id" component={Payment}></Route>
                         <Route path="/returns" component={Returns}></Route>
                         <Route path="/refund" component={Refund}></Route>
                         <Route path="/credit" component={Credit}></Route>
@@ -49,6 +52,7 @@ class App extends React.Component{
                         <Route path="/email" component={Email}></Route>
                         <Route path="/cheapproduct/:1" component={CheapProduct}></Route>
                         <Route path="/productclass" component={ProductClass}></Route>
+                        <Route path="/searchresult" component={SearchResult}></Route>
                         <Redirect to='/home'/>
                     </Switch>
                     </div>

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import CompanyMessage from "./companyMessage.jsx";
-import TopMessage from "./topMessage.jsx";
+import CompanyMessage from "../assets/companyMessage.jsx";
+import TopMessage from "../assets/topMessage.jsx";
 import '../css/previewlist.css';
 import { Steps,Modal,Icon,Input,Popconfirm,Button,Cascader,message,Form,Checkbox,Select,Tooltip,Row,Col,AutoComplete} from 'antd';
 import options from "../assets/city";
@@ -390,7 +390,8 @@ class PreviewList extends Component{
                     if(err){
                         message.error("订单获取失败")
                     }else{
-                        self.props.history.push("/orderlist");
+                        //self.props.history.push("/orderlist");
+                        self.props.history.push("/order");
                     }
                 }
                 var xhr=new XMLHttpRequest()

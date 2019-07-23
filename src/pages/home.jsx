@@ -1,11 +1,11 @@
 import React,{Component} from 'react';
 import {Icon,Carousel,Row, Col} from "antd";
 import {NavLink} from "react-router-dom";
-import CompanyMessage from "./companyMessage.jsx";
-import Fixed from "./fixed.jsx";
-import TopMessage from "./topMessage.jsx";
-import Action from '../reds/Action';
-import Store from '../reds/Store';
+import CompanyMessage from "../assets/companyMessage.jsx";
+import Fixed from "../assets/fixed.jsx";
+import TopMessage from "../assets/topMessage.jsx";
+// import Action from '../reds/Action';
+// import Store from '../reds/Store';
 import imgLogo from "../assets/images/hezhou.jpg";
 import '../css/home.css';
 import $ from "jquery";
@@ -17,35 +17,17 @@ class Home extends Component{
             arr3:[{name:"华为P30",href:"#"},{name:"荣耀20",href:"#"},{name:"Mate  20系列",href:"#"},{name:"荣耀V20",href:"#"}],
             current:"mail",
             backgrounds:"#f9f9f9",
-             showHides:"none",
+            showHides:"none",
             flag2:"down",
-            arr7:[
-                {name:"手机",href1:"https://www.baidu.com",produce:[{name:'荣耀',href:"#"},{name:'HUAWEI',href:"#"},{name:'P系列',href:"#"}]},
-                {name:"手机",href1:"https://www.baidu.com",produce:[{name:'荣耀',href:"#"},{name:'HUAWEI',href:"#"},{name:'P系列',href:"#"}]},
-                {name:"手机",href1:"https://www.baidu.com",produce:[{name:'荣耀',href:"#"},{name:'HUAWEI',href:"#"},{name:'P系列',href:"#"}]},
-                {name:"手机",href1:"https://www.baidu.com",produce:[{name:'荣耀',href:"#"},{name:'HUAWEI',href:"#"},{name:'P系列',href:"#"}]},
-                {name:"手机",href1:"https://www.baidu.com",produce:[{name:'荣耀',href:"#"},{name:'HUAWEI',href:"#"},{name:'P系列',href:"#"}]},
-                {name:"手机",href1:"https://www.baidu.com",produce:[{name:'荣耀',href:"#"},{name:'HUAWEI',href:"#"},{name:'P系列',href:"#"}]},
-            ],
-            arr8:[
-                {produce:[{img:'#',tip:"手机1",href:"#"},{img:'#',tip:"鼠标1",href:"#"},{img:'#',tip:"移动电源1",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"查看全部",href:"#"}]},
-                {produce:[{img:'#',tip:"手机2",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"移动电源2",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"查看全部",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"查看全部",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"查看全部",href:"#"}]},
-                {produce:[{img:'#',tip:"手机3",href:"#"},{img:'#',tip:"鼠标3",href:"#"},{img:'#',tip:"移动电源3",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"查看全部",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"查看全部",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"查看全部",href:"#"},{img:'#',tip:"鼠标2",href:"#"},{img:'#',tip:"查看全部",href:"#"}]},
-                {produce:[{img:'#',tip:"手机4",href:"#"},{img:'#',tip:"鼠标4",href:"#"},{img:'#',tip:"移动电源4",href:"#"},{img:'#',tip:"查看全部",href:"#"}]},
-                {produce:[{img:'#',tip:"手机5",href:"#"},{img:'#',tip:"鼠标5",href:"#"},{img:'#',tip:"移动电源5",href:"#"},{img:'#',tip:"查看全部",href:"#"}]},
-                {produce:[{img:'#',tip:"手机6",href:"#"},{img:'#',tip:"鼠标6",href:"#"},{img:'#',tip:"移动电源6",href:"#"},{img:'#',tip:"查看全部",href:"#"}]},
-            ],
-            arr9:["none","none","none","none","none","none"],
-            arr10:[
-                "https://www.baidu.com","https://www.baidu.com","https://www.baidu.com",
-                "https://ant.design/components/icon-cn/","https://ant.design/components/icon-cn/","https://ant.design/components/icon-cn/"
-            ],
+            arrClass:[],
+            arrProduct:[],
+            arr9:["none","none","none","none","none"],
             arr11:[
             {img:'#',tip:"企业购特惠",href:"#"},{img:'#',tip:"会员领券",href:"#"},
             {img:'#',tip:"以旧换新",href:"#"},{img:'#',tip:"navo5系列",href:"#"},
             {img:'#',tip:"荣耀数码",href:"#"},{img:'#',tip:"华为数码",href:"#"}
           ],
-          arrHot:[],
+        arrHot:[],
         arr13:[],
         arr130:[],
         arr14:[
@@ -71,6 +53,8 @@ class Home extends Component{
         this.recommend=this.recommend.bind(this);
         this.get=this.get.bind(this);
         this.changeNumber=this.changeNumber.bind(this);
+        this.getClass=this.getClass.bind(this);
+        this.getClassList=this.getClassList.bind(this);
     }
     //设定定时器
     componentDidMount(){
@@ -94,6 +78,8 @@ class Home extends Component{
         this.recommend(0);
         this.get();
         this.changeNumber();
+        this.getClass();
+        this.getClassList();
     }
     //调取购物车中商品
     changeNumber(){
@@ -145,7 +131,125 @@ class Home extends Component{
             if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
-                //console.log("fff=========eeeeeeee",body);
+                let arr=[];
+                for(let j=1;j<6;j++){
+                    let obj={};
+                    obj.produce=body.slice(0*j,4*j);
+                    arr.push(obj);
+                }
+                _this.setState({arrProduct:arr});
+                console.log("fff=========eeeeeeee",body,arr);
+            }else if (xhr.status === 401) {
+                console.error(xhr.responseText);
+                var code = null;
+                try{
+                    code = JSON.parse(xhr.responseText)["code"];
+                    if(code==33){
+                        browserHistory.push("/login");
+                    }else{
+                        let  msg = JSON.parse(xhr.responseText)["msg"];
+                        message.error(msg,10);
+                    }
+                }catch(e){
+                    
+                }
+            }else{
+                let  msg = JSON.parse(xhr.responseText)["msg"];
+                message.error(msg,10);
+            }
+            }
+        };
+        //console.log("获取精品推荐列表");
+    }
+      //获取产品列表
+      getClass(){
+        let  _this=this;
+        var url= "/api/mall/product_class";
+        var xhr = new XMLHttpRequest(); 
+        xhr.open("get", url,true);
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let body=JSON.parse(xhr.responseText).data;
+                let arrTwos=body.slice(5);
+                let arr=[];
+                let arrThree=[];
+                for(let j=0;j<5;j++){
+                    let obj={};
+                    obj.name=body[j].name;
+                    obj.id=body[j].id; 
+                    obj.level=1;
+                    obj.parent=0;
+                    arrThree.push(obj);
+                    for(let i=0;i<arrThree.length;i++){
+                        let arrTwo=[];
+                        switch(arrThree[i].name){
+                            case body[0].name:
+                               arrTwo.push(arrTwos[0]);
+                               arrTwo.push(arrTwos[1]);
+                               obj.produce=arrTwo;
+                               break;
+                            case body[1].name:
+                                arrTwo.push(arrTwos[2]);
+                                arrTwo.push(arrTwos[3]);
+                                arrTwo.push(arrTwos[4]);
+                                obj.produce=arrTwo;
+                                break;
+                            case body[2].name:
+                                    arrTwo.push(arrTwos[5]);
+                                    arrTwo.push(arrTwos[6]);
+                                    obj.produce=arrTwo;
+                                    break;
+                            case body[3].name:
+                                    arrTwo.push(arrTwos[7]);
+                                    obj.produce=arrTwo;
+                                    break;
+                            case body[4].name:
+                                    arrTwo.push(arrTwos[8]);
+                                    arrTwo.push(arrTwos[9]);
+                                    obj.produce=arrTwo;
+                                    break;
+                        }
+                    }
+                    
+                }
+                _this.setState({arrClass:arrThree})
+                console.log("fff====gggggg=====eeeeeeee",arrTwos,arrThree,body);
+            }else if (xhr.status === 401) {
+                console.error(xhr.responseText);
+                var code = null;
+                try{
+                    code = JSON.parse(xhr.responseText)["code"];
+                    if(code==33){
+                        browserHistory.push("/login");
+                    }else{
+                        let  msg = JSON.parse(xhr.responseText)["msg"];
+                        message.error(msg,10);
+                    }
+                }catch(e){
+                    
+                }
+            }else{
+                let  msg = JSON.parse(xhr.responseText)["msg"];
+                message.error(msg,10);
+            }
+            }
+        };
+        console.log("获取产品分类");
+    }
+    //获取分类详细产品
+    getClassList(){
+        let  _this=this;
+        var url= "/api/mall/product_class?parent=2";
+        var xhr = new XMLHttpRequest(); 
+        xhr.open("get", url,true);
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let body=JSON.parse(xhr.responseText).data;
+                console.log("fff=====hhhhhh====eeeeeeee",body);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -191,8 +295,12 @@ class Home extends Component{
                    _this.setState({arrHot:body})
                }
                if(value===1){
-                    _this.setState({arrCheap:body,arrBanner:body,banner:"block"},()=>{
-                        //console.log("yyyyyyyyy======",_this.state.arrCheap,_this.state.arrCheap[0].image);
+                   let arr=[];
+                   for(let m=0;m<5;m++){
+                       arr=arr.concat(body)
+                   }
+                    _this.setState({arrCheap:body,arrBanner:arr,banner:"block"},()=>{
+                        console.log("yyyyyyyyy======",arr);
                     })
                }
                if(value===0){
@@ -259,15 +367,52 @@ class Home extends Component{
     }
     //搜索按钮
     search(){
-        console.log("您点击了搜索按钮");
+        let  _this=this;
+        let searchWord=this.searchs.value;
+        var url= "/api/mall/product?search_name="+searchWord;
+        var xhr = new XMLHttpRequest(); 
+        xhr.open("get", url,true);
+        xhr.send();
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let body=JSON.parse(xhr.responseText).data;
+                //_this.setState({arrClass:arrThree})
+                if(body.length){
+                    _this.props.history.push("/detail/"+body[0].id);
+                }else{
+                    this.props.history.push("/searchresult");
+                }
+                console.log("fff====gggggg=====eeeeeeee",body,searchWord);
+            }else if (xhr.status === 401) {
+                console.error(xhr.responseText);
+                var code = null;
+                try{
+                    code = JSON.parse(xhr.responseText)["code"];
+                    if(code==33){
+                        browserHistory.push("/login");
+                    }else{
+                        let  msg = JSON.parse(xhr.responseText)["msg"];
+                        message.error(msg,10);
+                    }
+                }catch(e){
+                    
+                }
+            }else{
+                let  msg = JSON.parse(xhr.responseText)["msg"];
+                message.error(msg,10);
+            }
+            }
+        };
+        console.log("您点击了搜索按钮",searchWord);
     }
     mouseEnter4(index){
-        let arr10=["none","none","none","none","none","none"];
+        let arr10=["none","none","none","none","none"];
         arr10[index]="flex";
         this.setState({arr9:arr10});
     }
     mouseLeave4(){
-        let arr10=["none","none","none","none","none","none"];
+        let arr10=["none","none","none","none","none"];
         this.setState({arr9:arr10});
     }
     //轮播图的上一页与下一页的切换
@@ -306,7 +451,7 @@ class Home extends Component{
         console.log("你点击了获取right数据");
     }
     render(){
-        const showHide=this.state.showHide;
+        //const showHide=this.state.showHide;
         const _this=this;
         return(
             <div className="home-container">
@@ -345,18 +490,17 @@ class Home extends Component{
                 <div className="home-slide-show" style={{display:this.state.banner}}>
                     <div className="home-slide-container">
                         <Carousel autoplay ref={el =>this.slider = el}>
-                            <div>
-                               <NavLink><img src={this.state.arrBanner[0]?this.state.arrBanner[0].image:''}/></NavLink>
-                            </div>
-                            <div>
-                                <img src={this.state.arrBanner[0]?this.state.arrBanner[0].image:''}/>
-                            </div>
-                            <div>
-                                <img src={this.state.arrBanner[0]?this.state.arrBanner[0].image:''}/>
-                            </div>
-                            <div>
-                                <img src={this.state.arrBanner[0]?this.state.arrBanner[0].image:''}/>
-                            </div>
+                            {
+                                this.state.arrBanner.map((item,index)=>{
+                                    return(
+                                        <div key={index}>
+                                            <NavLink to={"/detail/"+item.id}>
+                                                <img src={item.image} className="home-banner-img"/>
+                                            </NavLink>
+                                        </div>
+                                    )
+                                })
+                            }
                         </Carousel>
                         <div className="home-tag-one"><Icon type="left" onClick={this.next.bind(this)} style={{color:"#fff",fontSize:15}}/></div>
                         <div className="home-tag-two"><Icon type="right" onClick={this.prev.bind(this)} style={{color:"#fff",fontSize:15}}/></div>   
@@ -365,7 +509,7 @@ class Home extends Component{
                     <div className="home-slide-top"  onMouseLeave={this.mouseLeave4.bind(this)}>
                         <div className="home-slide-appear">
                                 {
-                                    this.state.arr7.map((item,index)=>{
+                                    this.state.arrClass.map((item,index)=>{
                                         return(
                                             <div key={index}  onMouseEnter={_this.mouseEnter4.bind(_this,index)}>
                                                 <h3><a href={item.href1}>{item.name}</a></h3>
@@ -382,18 +526,17 @@ class Home extends Component{
                         
                         <div className="home-slide-showhide">
                                 {
-                                    this.state.arr8.map((item,index)=>{
+                                    this.state.arrProduct.map((item,index)=>{
                                          return( <div key={index} style={{display:_this.state.arr9[index]}}>
                                             <div>
                                                {
                                                     item.produce.slice(0,4).map((item2,index2)=>{
-                                                       
                                                         return (
                                                             <div key={index2}>
-                                                                <a href={item2.href}>
-                                                                    <img src={item2.img}/>
-                                                                    <span>{item2.tip}</span>
-                                                                </a>
+                                                                {/* <a href={item2.href}> */}
+                                                                    <img src={item2.image}/>
+                                                                    <span>{item2.name}</span>
+                                                                {/* </a> */}
                                                             </div>
                                                         )
                                                     })
@@ -406,10 +549,10 @@ class Home extends Component{
                                                        
                                                         return (
                                                             <div key={index2}>
-                                                                <a href={item2.href}>
-                                                                    <img src={item2.img}/>
-                                                                    <span>{item2.tip}</span>
-                                                                </a>
+                                                                {/* <a href={item2.href}> */}
+                                                                    <img src={item2.image}/>
+                                                                    <span>{item2.name}</span>
+                                                                {/* </a> */}
                                                             </div>
                                                         )
                                                     })
@@ -421,10 +564,10 @@ class Home extends Component{
                                                         
                                                         return (
                                                             <div key={index2}>
-                                                                <a href={item2.href}>
-                                                                    <img src={item2.img}/>
-                                                                    <span>{item2.tip}</span>
-                                                                </a>
+                                                                {/* <a href={item2.href}> */}
+                                                                    <img src={item2.image}/>
+                                                                    <span>{item2.name}</span>
+                                                                {/* </a> */}
                                                             </div>
                                                         )
                                                     })
@@ -436,10 +579,10 @@ class Home extends Component{
                                                        
                                                         return (
                                                             <div key={index2}>
-                                                                <a href={item2.href}>
-                                                                    <img src={item2.img}/>
-                                                                    <span>{item2.tip}</span>
-                                                                </a>
+                                                                {/* <a href={item2.href}> */}
+                                                                    <img src={item2.image}/>
+                                                                    <span>{item2.name}</span>
+                                                                {/* </a> */}
                                                             </div>
                                                         )
                                                     })
@@ -514,7 +657,7 @@ class Home extends Component{
                                             return (
                                                 <NavLink to={"/detail/"+item.product_id} key={index}>
                                                     <li>
-                                                        <img src={item.image}/>
+                                                        <div><img src={item.image}/></div>
                                                         <div>{item.name}</div>
                                                         <div>{item.desc}</div>
                                                         <div>￥{item.price}</div>

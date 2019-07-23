@@ -9,6 +9,8 @@ class Img extends Component {
        * 组件宽高必须大于鼠标悬停小方块 ！！！
        */
       dataImg:[],
+      numbers:0,
+      nextNumber:0,
       params: {
         // 放大倍数
         scale: 4,
@@ -108,6 +110,7 @@ class Img extends Component {
   
   // props 变化时更新
   componentWillReceiveProps(nextProps) {
+    //console.log(nextProps,this.props);
     this.updataImg(nextProps);
     let _this=this;
     if(nextProps.transids){
@@ -124,9 +127,13 @@ class Img extends Component {
               let arr=[];
               arr.unshift(bodySole);
               let arrAll=arr.concat(body);
-              _this.setState({dataImg:arrAll});
-              $("#img img").eq(0).css({"border":"1px solid red"});
-              console.log("eee=========",body,bodySole);
+              let number=_this.state.numbers+1;
+              _this.setState({dataImg:arrAll,numbers:number},()=>{
+                    if(_this.state.numbers===1){
+                      $("#img img").eq(0).css({"border":"1px solid red"});
+                    }
+              });  
+              //console.log("eee=========",body,bodySole);
           }else if (xhr.status === 401) {
               console.error(xhr.responseText);
               var code = null;
@@ -148,7 +155,7 @@ class Img extends Component {
           }
       };
     }
-    console.log("bbb===ccccc",nextProps,nextProps.transids);
+    //console.log("bbb===ccccc",nextProps,nextProps.transids);
   }
 
   /**

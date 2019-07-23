@@ -3,7 +3,7 @@ import ReactDOM     from 'react-dom';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route,Redirect,NavLink,Link,Switch} from "react-router-dom";
 import { Layout, Button, Menu, Breadcrumb, Icon , Dropdown, Modal, Modalm, Alert, Input,message} from 'antd';
-import logoimg from '../assets/images/luatlogo.jpg'
+import logoimg from '../assets/images/hezhou.jpg'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -20,7 +20,7 @@ class CommonHeader extends Component{
               <div className="left">
                 <div className="logo">
                   <a href="#" title="Luat.com-合宙商城">
-                    <img src={logoimg}/>
+                    <img src={logoimg} style={{width:250,height:36}}/>
                   </a>
                 </div>
                 <div className="naver" >

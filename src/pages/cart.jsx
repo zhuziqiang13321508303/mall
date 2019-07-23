@@ -1,9 +1,9 @@
 import React,{ Component} from "react";
-import Fixed from "./fixed.jsx";
-import CompanyMessage from "./companyMessage.jsx";
-import TopMessage from "./topMessage.jsx";
-import Action from '../reds/Action';
-import Store from '../reds/Store';
+import Fixed from "../assets/fixed.jsx";
+import CompanyMessage from "../assets/companyMessage.jsx";
+import TopMessage from "../assets/topMessage.jsx";
+// import Action from '../reds/Action';
+// import Store from '../reds/Store';
 import imgLogo from "../assets/images/hezhou.jpg";
 import '../css/cart.css';
 import { Steps,Checkbox,InputNumber,Popconfirm,message,Tooltip,Button,Icon,Empty} from 'antd';
@@ -12,7 +12,7 @@ class Cart extends Component{
     constructor(props){
         super(props)
         this.state={
-            arr1: [],
+            arrProduct: [],
             step:0,
             allNumber:0,
             allCount:0.00,
@@ -36,7 +36,7 @@ class Cart extends Component{
 		}else{
             let ids=[];
             
-            let arr=this.state.arr1;
+            let arr=this.state.arrProduct;
             for(let j=0;j<arr.length;j++){
                 let obj={};
                 obj.id=arr[j].id;
@@ -47,7 +47,7 @@ class Cart extends Component{
 			this.setState({checkall:true})
 		}
 		var _this=this;
-		this.state.arr1.map((item,i)=>{
+		this.state.arrProduct.map((item,i)=>{
 			item.selected=!_this.state.checkall
         })
         this.zongNumber();
@@ -55,15 +55,15 @@ class Cart extends Component{
       }
       //单选按钮
       onChange2(i){
-        let list1=this.state.arr1;
+        let list1=this.state.arrProduct;
         let _this=this;
 		list1[i].selected=!list1[i].selected
-		this.setState({arr1:list1},function(){
-			var sel=this.state.arr1.filter(function(item){
+		this.setState({arrProduct:list1},function(){
+			var sel=this.state.arrProduct.filter(function(item){
 				return item.selected==true
             })
             console.log(sel);
-			sel.length==this.state.arr1.length?this.setState({checkall:true}):this.setState({checkall:false})
+			sel.length==this.state.arrProduct.length?this.setState({checkall:true}):this.setState({checkall:false})
             let ids=[];
             
             for(let i=0;i<sel.length;i++){
@@ -153,9 +153,9 @@ class Cart extends Component{
             }
             }
         };
-        var arr2=this.state.arr1;
+        var arr2=this.state.arrProduct;
         arr2.splice(index,1);
-        this.setState({arr1:arr2})
+        this.setState({arrProduct:arr2})
         message.success('删除成功');
   }
       cancel(e) {
@@ -182,7 +182,7 @@ class Cart extends Component{
       //总金额计算
       zong(){
         var zong=0;
-        this.state.arr1.map((item,i)=>{
+        this.state.arrProduct.map((item,i)=>{
             if(item.selected==true){
                 zong+=item.price*item.amount
             }
@@ -192,7 +192,7 @@ class Cart extends Component{
         //计算总件数
         zongNumber(){
             var zong=0;
-            this.state.arr1.map((item,i)=>{
+            this.state.arrProduct.map((item,i)=>{
                 if(item.selected==true){
                     zong+=item.amount
                 }
@@ -202,7 +202,7 @@ class Cart extends Component{
         }
       //结算按钮生成订单
       countAll(){
-            let checked_arr=this.state.arr1.filter((item)=>
+            let checked_arr=this.state.arrProduct.filter((item)=>
                 item.selected==true
             )
             console.log(checked_arr)
@@ -240,8 +240,8 @@ class Cart extends Component{
                     allMount+=body[i].amount
                 }
                   
-                _this.setState({arr1:body,allMounts:allMount},()=>{
-                    Store.dispatch(Action.addItem(_this.state.allMounts));
+                _this.setState({arrProduct:body,allMounts:allMount},()=>{
+                    //Store.dispatch(Action.addItem(_this.state.allMounts));
                     console.log("bbbb===bbb==cccc===ggg",_this.state.allMounts);
                 });
                 if(body.length==0){
@@ -331,11 +331,11 @@ class Cart extends Component{
                 <Empty description="您的购物车是空的，请赶紧选购吧" style={{display:this.state.empty,marginTop:185}}/>
                     <ul>
                         {
-                            _this.state.arr1.map((item,index)=>{
+                            _this.state.arrProduct.map((item,index)=>{
                                 return (<li key={index}>
                                             <div>
                                                 <Checkbox onChange={this.onChange2.bind(this,index)} checked={item.selected}></Checkbox>
-                                                <img src={item.img}/>
+                                                <img src={item.image}/>
                                                 <p>{item.desc}</p>
                                             </div>
                                             <div>

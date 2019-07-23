@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import CompanyMessage from "./companyMessage.jsx";
+import CompanyMessage from "../assets/companyMessage.jsx";
 import {Link,NavLink} from "react-router-dom";
 import {Pagination,message} from "antd";
 import '../css/list.css';

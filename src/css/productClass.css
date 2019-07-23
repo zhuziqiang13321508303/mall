@@ -18,14 +18,12 @@
 .vary-nav-container>div:first-child{
     width:100%;
     height:50px;
-    background:green;
     padding-top:14px;
     box-sizing:border-box;
 }
 .vary-nav-container>div:nth-child(2){
     width:100%;
     height:50px;
-    background:red;
     display:flex;
     box-sizing:border-box;
     padding-left:30px;
@@ -37,7 +35,6 @@
 .vary-nav-container>div:last-child{
     width:100%;
     height:50px;
-    background:purple;
     display:flex;
     align-items:center;
     padding-left:30px;

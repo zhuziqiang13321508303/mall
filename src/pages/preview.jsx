@@ -2,8 +2,8 @@ import React,{Component} from 'react';
 import '../css/previewlist.css';
 import { Steps,Modal,Icon,Input,Popconfirm,Button,Cascader,message,Form,Checkbox,Select,Tooltip,Row,Col,AutoComplete} from 'antd';
 import options from "../assets/city";
-import TopMessage from "./topMessage.jsx";
-import CompanyMessage from "./companyMessage.jsx";
+import TopMessage from "../assets/topMessage.jsx";
+import CompanyMessage from "../assets/companyMessage.jsx";
 import imgLogo from "../assets/images/hezhou.jpg";
 import $ from 'jquery';
 const { Step } = Steps;
@@ -386,7 +386,8 @@ class Preview extends Component{
                 if(err){
                     message.fail("订单获取失败")
                 }else{
-                    self.props.history.push("/orderlist");
+                    //self.props.history.push("/orderlist");
+                    self.props.history.push("/order");
                 }
             }
             var xhr=new XMLHttpRequest()

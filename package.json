@@ -30,11 +30,11 @@
   "dependencies": {
     "antd": "^3.19.6",
     "jquery": "^3.4.1",
+    "qrcode.react": "^0.9.3",
     "react": "^16.8.6",
     "react-dom": "npm:@hot-loader/react-dom",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "redux": "^4.0.4",
     "swiper": "^4.5.0"
   }
 }

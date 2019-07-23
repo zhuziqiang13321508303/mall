@@ -2,12 +2,10 @@ import React,{Component} from 'react';
 import CompanyMessage from "../assets/companyMessage.jsx";
 import Fixed from "../assets/fixed.jsx";
 import TopMessage from "../assets/topMessage.jsx";
-// import Action from '../reds/Action';
-// import Store from '../reds/Store';
 import {NavLink} from "react-router-dom";
-import {Pagination,message,Breadcrumb} from "antd";
-import '../css/productClass.css';
-class ProductClass extends Component{
+import {message,Icon,Empty} from "antd";
+import '../css/searchResult.css';
+class SearchResult extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -102,46 +100,19 @@ class ProductClass extends Component{
         };
         console.log("获取商品类别");
     }
-    //点击分页器获取新数据
-    onChange(page,pagesize){
-            let back=10*(page-1);
-            let forward=page*10;
-            this.setState({back:back,forward:forward});
-            console.log(page,pagesize);
-    }
     render(){
         let back=this.state.back;
         let forward=this.state.forward;
         return(
-            <div className="class-container">
+            <div className="search-container">
                <TopMessage/>
-               <div className="vary-nav">
-                    <div className="vary-nav-container">
-                            <div>
-                                <Breadcrumb separator=">">
-                                    <Breadcrumb.Item href="#/home">{this.state.arrNav[0]}</Breadcrumb.Item>
-                                    <Breadcrumb.Item href="">{this.state.arrNav[1]}</Breadcrumb.Item>
-                                    <Breadcrumb.Item href="">{this.state.arrNav[2]}</Breadcrumb.Item>
-                                </Breadcrumb>
-                            </div>
-                            <div>
-                                <span>分类:</span>
-                                    {this.state.arrName.map((item,index)=>{
-                                       return(  <span key={index}>
-                                                    {item}
-                                                </span>) 
-                                    })}
-                            </div>
-                            <div>
-                                <span>排序:</span>
-                                <span>上架时间</span>
-                                <span>价格</span>
-                                <span>评价</span>
-                            </div>
+               <div className="search-nav">
+                    <div className="search-nav-container" style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                        <Empty description="抱歉没有找到相关商品，为您推荐以下商品！"/>
                     </div>
                </div>
-                <div className="class-section">
-                    <div className="class-product">
+                <div className="search-section">
+                    <div className="search-product">
                             {
                                 this.state.arrClass.slice(back,forward).map((item,index)=>{
                                     return (
@@ -151,21 +122,12 @@ class ProductClass extends Component{
                                                     <img src={item.image}/>
                                                     <div>{item.name}</div>
                                                     <div>￥{item.price}</div>
-                                                    <p>
-                                                        <span>选购</span>
-                                                        <span>0人评价</span>
-                                                    </p>
                                                 </NavLink>
                                         </div>
                                         
                                     )
                                 })
                             }
-                    </div>
-                    <div className="class-piganation">
-                        <div className="class-piganation-container">
-                            <Pagination defaultCurrent={1} total={this.state.len} pageSize={10} onChange={this.onChange.bind(this)}/>
-                        </div>
                     </div>
                 </div>
                 <Fixed number={this.state.infos}/>
@@ -174,4 +136,4 @@ class ProductClass extends Component{
         )
     }
 }
-export default ProductClass;
+export default SearchResult;

@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
-import CompanyMessage from "./companyMessage.jsx";
-import TopMessage from "./topMessage.jsx";
+import CompanyMessage from "../assets/companyMessage.jsx";
+import TopMessage from "../assets/topMessage.jsx";
 import '../css/orderlist.css';
 import { Steps,Input,Button} from 'antd';
-import Tables from "./orderdisplay.jsx";
+import Tables from "../assets/orderdisplay.jsx";
 import options from "../assets/city";
 import imgLogo from "../assets/images/hezhou.jpg";
 const { Step } = Steps;

@@ -118,6 +118,7 @@ class Img extends Component {
           _this.updataImg(nextProps);
       }
     })
+    //this.updataImg(nextProps);
     if(nextProps.transids){
       var url= "/api/mall/product/"+nextProps.transids;
       var xhr = new XMLHttpRequest();

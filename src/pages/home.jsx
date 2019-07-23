@@ -44,7 +44,7 @@ class Home extends Component{
         counts:0,
         left:0,
         right:5,
-        arr16:[],
+        arrCheaps:[],
         arrCheap:[],
         arrBanner:[],
         banner:"none",
@@ -328,14 +328,14 @@ class Home extends Component{
                        arr=arr.concat(body)
                    }
                     _this.setState({arrCheap:body,arrBanner:arr,banner:"block"},()=>{
-                        //console.log("yyyyyyyyy======",arr);
+                        console.log("yyyyyyyyy======",arr);
                     })
                }
                if(value===0){
                    _this.setState({
-                        arr16:body
+                        arrCheaps:body
                    })
-                   //console.log("ooooo===",body);
+                   console.log("ooooo===",body);
                }
                 //console.log("fff=========",body);
             }else if (xhr.status === 401) {
@@ -518,7 +518,7 @@ class Home extends Component{
                                 this.state.arrBanner.map((item,index)=>{
                                     return(
                                         <div key={index}>
-                                            <NavLink to={"/detail/"+item.id}>
+                                            <NavLink to={"/detail/"+item.product_id}>
                                                 <img src={item.image} className="home-banner-img"/>
                                             </NavLink>
                                         </div>

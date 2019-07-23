@@ -62,7 +62,7 @@ class PreviewList extends Component{
                         console.log("ggggg=====",res.data,res.data.last_shipping_address)
                         let arr=[];
                         let recordss=res.data.last_shipping_address;
-                        arr.push(res.data,res.data.last_shipping_address);
+                        arr.push(res.data.last_shipping_address);
                         self.setState({
                             records:res.data,
                             addressList:arr,
@@ -390,8 +390,8 @@ class PreviewList extends Component{
                     if(err){
                         message.error("订单获取失败")
                     }else{
-                        //self.props.history.push("/orderlist");
-                        self.props.history.push("/order");
+                        self.props.history.push("/orderlist");
+                        //self.props.history.push("/order");
                     }
                 }
                 var xhr=new XMLHttpRequest()

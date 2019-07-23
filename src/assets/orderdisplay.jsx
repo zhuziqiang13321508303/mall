@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import { Table,Tag,message} from 'antd';
+import { Table,message} from 'antd';
 class Tables extends Component{
     constructor(props){
         super(props)
@@ -151,13 +151,4 @@ class Tables extends Component{
         )
     }
 }
-// const data = [
-//   {
-//     key: '1',
-//     name: 'John Brown',
-//     age: 32,
-//     address: 'New York No. 1 Lake Park',
-//     tags: ['nice', 'developer'],
-//   },
-// ];
 export default Tables;

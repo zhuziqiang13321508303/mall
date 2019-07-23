@@ -163,22 +163,55 @@ class Cart extends Component{
         message.error('你点击了取消按钮');
       }
       //批量删除按钮
-    //   onClick(){
-    //          var arr2=this.state.arr1.filter((item)=>{
-    //         return item.selected===true
-    //     });
-    //     if(arr2.length<=0){
-    //         alert("请选择要删除的商品")
-    //     }else{
-    //         var arr3=this.state.arr1.filter((item)=>{
-    //             return item.selected===false
-    //         });
-    //         this.setState({arr1:arr3})
-    //         console.log(arr3,arr2);
-    //         alert("删除成功")
-    //         this.state.checkall=false;
-    //     }
-    //   }
+      onClick(){
+        let arr2=this.state.arrProduct.filter((item)=>{
+                    return item.selected===true
+            });
+        if(arr2.length<=0){
+            alert("请选择要删除的商品")
+        }else{
+            let arr=[];
+            for(let m=0;m<arr2.length;m++){
+                let obj={};
+                obj.id=arr2[m].id;
+                arr.push(obj);
+            }
+            let _this=this;
+            var url= "/api/mall/cart_item";
+            var xhr = new XMLHttpRequest(); 
+            let data=new FormData();
+            data.append("items",JSON.stringify(arr));
+            xhr.open("DELETE", url,true);
+            xhr.send(data);
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    let body=xhr.responseText;
+                    alert("删除成功")
+                    _this.getCart();
+                    console.log("eee=========",body);
+                }else if (xhr.status === 401) {
+                    console.error(xhr.responseText);
+                    var code = null;
+                    try{
+                        code = JSON.parse(xhr.responseText)["code"];
+                        if(code==33){
+                            browserHistory.push("/login");
+                        }else{
+                            let  msg = JSON.parse(xhr.responseText)["msg"];
+                            message.error(msg,10);
+                        }
+                    }catch(e){
+                        
+                    }
+                }else{
+                    let  msg = JSON.parse(xhr.responseText)["msg"];
+                    message.error(msg,10);
+                }
+                }
+            };
+        }
+      }
       //总金额计算
       zong(){
         var zong=0;
@@ -238,14 +271,11 @@ class Cart extends Component{
                 let allMount=0;
                 for(let i=0;i<body.length;i++){
                     allMount+=body[i].amount
-                }
-                  
-                _this.setState({arrProduct:body,allMounts:allMount},()=>{
-                    //Store.dispatch(Action.addItem(_this.state.allMounts));
-                    console.log("bbbb===bbb==cccc===ggg",_this.state.allMounts);
-                });
+                }  
+                _this.setState({arrProduct:body,allMounts:allMount});
                 if(body.length==0){
-                    _this.setState({empty:"block"})
+                    _this.setState({empty:"block"});
+                    //_this.state.checkall=!_this.state.checkall;
                 }if(body.length!=0){
                     console.log(body.length);
                     _this.setState({empty:"none"})
@@ -361,9 +391,9 @@ class Cart extends Component{
                     <div className="cart-all-count">
                         <div className="cart-all-left">
                             <Checkbox onChange={this.onChange.bind(this)} checked={this.state.checkall}>全选</Checkbox>
-                            {/* <span onClick={this.onClick.bind(this)}>
+                            <span onClick={this.onClick.bind(this)}>
                                 删除
-                            </span> */}
+                            </span>
                         </div>
                     
                         <div className="cart-all-right">

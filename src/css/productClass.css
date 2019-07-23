@@ -31,6 +31,7 @@
 }
 .vary-nav-container>div:nth-child(2) span,.vary-nav-container>div:last-child span{
     margin-left:30px;
+    font-size:16px;
 }
 .vary-nav-container>div:last-child{
     width:100%;
@@ -52,7 +53,6 @@
     background:yellow;
     display:flex;
     flex-wrap:wrap;
-    /* justify-content:space-around; */
 }
 .class-product>div{
     width:18%;

@@ -155,6 +155,7 @@ class Order extends Component{
         }
     }
     orderPay(delivery_id){
+        console.log(delivery_id);
         this.props.history.push(`/payment/${delivery_id}`)
     }
     render(){
@@ -208,6 +209,7 @@ class Order extends Component{
             {title:'付款状态',dataIndex:'payment_status',key:"payment_status"},
             {title:'订单状态及操作',dataIndex:'state',key:"state",render:(text,record,index)=>{
                 if(record.payment_status==="未付款"){
+                    console.log(record);
                     return <div><button onClick={()=>self.orderPay(record.id)} className="order_paynow">立即支付</button><button onClick={()=>self.deliveryDelete(record.id)} className="order_cancle">取消订单</button></div>
                 }else if(record.payment_status==="已付款"){
                     return <div><button className="order_list">订单详情</button><button onClick={()=>self.deliveryConfirm(record.id)} className="order_list">确认收货</button></div>

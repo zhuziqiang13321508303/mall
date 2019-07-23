@@ -12,7 +12,7 @@ class Detail extends Component{
     constructor(props){
         super(props)
         this.state={
-            data1:{},
+            dataDetail:{},
             // 缩略图
             minImg: "",
             // 高清图
@@ -40,7 +40,7 @@ class Detail extends Component{
             if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
-                    _this.setState({data1:body,minImg:body.image,maxImg:body.image,id:body.id,number:1});
+                    _this.setState({dataDetail:body,minImg:body.image,maxImg:body.image,id:body.id,number:1});
                 //console.log("eee=========",body);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
@@ -153,9 +153,9 @@ class Detail extends Component{
         var url= "/api/mall/cart_item";
         var xhr = new XMLHttpRequest();
         var data2 = new FormData();
-        data2.append('product_id',this.state.data1.id);
+        data2.append('product_id',this.state.dataDetail.id);
         data2.append('amount',this.state.number);
-        console.log(this.state.data1.id,this.state.number);
+        console.log(this.state.dataDetail.id,this.state.number);
         xhr.open("POST", url,true);
         xhr.send(data2);
         xhr.onreadystatechange = function(){
@@ -231,9 +231,9 @@ class Detail extends Component{
                             <Breadcrumb.Item>
                                 <a href="#/home">首页</a>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>{this.state.data1.name}</Breadcrumb.Item>
+                            <Breadcrumb.Item>{this.state.dataDetail.name}</Breadcrumb.Item>
                             <Breadcrumb.Item>
-                                {this.state.data1.desc}
+                                {this.state.dataDetail.desc}
                             </Breadcrumb.Item>
                         </Breadcrumb>
                     </div>
@@ -242,11 +242,11 @@ class Detail extends Component{
                     <div className="detail-main-container">
                         <Img minImg={minImg} maxImg={maxImg} transids={this.props.match.params.id}/>  
                         <div className="detail-description">
-                            <p>{this.state.data1.desc}vcufdvbfhdvb</p>
+                            <p>{this.state.dataDetail.desc}vcufdvbfhdvb</p>
                             <div className="detail-price">
                                 <div>
                                     <span>价格</span>
-                                    <span>￥{this.state.data1.price}</span>
+                                    <span>￥{this.state.dataDetail.price}</span>
                                 </div>
                                 <div>
                                     <span>促销</span>

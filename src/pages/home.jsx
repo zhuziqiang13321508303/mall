@@ -55,6 +55,7 @@ class Home extends Component{
         this.changeNumber=this.changeNumber.bind(this);
         this.getClass=this.getClass.bind(this);
         this.getClassList=this.getClassList.bind(this);
+        this.handleData=this.handleData.bind(this);
     }
     //设定定时器
     componentDidMount(){
@@ -97,7 +98,7 @@ class Home extends Component{
                     allMount+=body[i].amount
                 }
                  _this.setState({infos:allMount});
-                console.log("eee=========fffffff",body);
+                //console.log("eee=========fffffff",body);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -118,7 +119,7 @@ class Home extends Component{
             }
             }
         };
-        console.log("aaaa++++++=====oooooopppp=");
+        //console.log("aaaa++++++=====oooooopppp=");
     }
     //获取产品列表
     get(){
@@ -138,7 +139,7 @@ class Home extends Component{
                     arr.push(obj);
                 }
                 _this.setState({arrProduct:arr});
-                console.log("fff=========eeeeeeee",body,arr);
+                //console.log("fff=========eeeeeeee",body,arr);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -161,7 +162,7 @@ class Home extends Component{
         };
         //console.log("获取精品推荐列表");
     }
-      //获取产品列表
+      //获取产品分类列表
       getClass(){
         let  _this=this;
         var url= "/api/mall/product_class";
@@ -172,50 +173,7 @@ class Home extends Component{
             if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
-                let arrTwos=body.slice(5);
-                let arr=[];
-                let arrThree=[];
-                for(let j=0;j<5;j++){
-                    let obj={};
-                    obj.name=body[j].name;
-                    obj.id=body[j].id; 
-                    obj.level=1;
-                    obj.parent=0;
-                    arrThree.push(obj);
-                    for(let i=0;i<arrThree.length;i++){
-                        let arrTwo=[];
-                        switch(arrThree[i].name){
-                            case body[0].name:
-                               arrTwo.push(arrTwos[0]);
-                               arrTwo.push(arrTwos[1]);
-                               obj.produce=arrTwo;
-                               break;
-                            case body[1].name:
-                                arrTwo.push(arrTwos[2]);
-                                arrTwo.push(arrTwos[3]);
-                                arrTwo.push(arrTwos[4]);
-                                obj.produce=arrTwo;
-                                break;
-                            case body[2].name:
-                                    arrTwo.push(arrTwos[5]);
-                                    arrTwo.push(arrTwos[6]);
-                                    obj.produce=arrTwo;
-                                    break;
-                            case body[3].name:
-                                    arrTwo.push(arrTwos[7]);
-                                    obj.produce=arrTwo;
-                                    break;
-                            case body[4].name:
-                                    arrTwo.push(arrTwos[8]);
-                                    arrTwo.push(arrTwos[9]);
-                                    obj.produce=arrTwo;
-                                    break;
-                        }
-                    }
-                    
-                }
-                _this.setState({arrClass:arrThree})
-                console.log("fff====gggggg=====eeeeeeee",arrTwos,arrThree,body);
+               _this.handleData(body);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -236,7 +194,52 @@ class Home extends Component{
             }
             }
         };
-        console.log("获取产品分类");
+        //console.log("获取产品分类");
+    }
+    //对商品分类数据进行处理
+    handleData(body){
+        let arrTwos=body.slice(5);
+        let arrThree=[];
+        for(let j=0;j<5;j++){
+            let obj={};
+            obj.name=body[j].name;
+            obj.id=body[j].id; 
+            obj.level=1;
+            obj.parent=0;
+            arrThree.push(obj);
+            for(let i=0;i<arrThree.length;i++){
+                let arrTwo=[];
+                switch(arrThree[i].name){
+                    case body[0].name:
+                       arrTwo.push(arrTwos[0]);
+                       arrTwo.push(arrTwos[1]);
+                       obj.produce=arrTwo;
+                       break;
+                    case body[1].name:
+                        arrTwo.push(arrTwos[2]);
+                        arrTwo.push(arrTwos[3]);
+                        arrTwo.push(arrTwos[4]);
+                        obj.produce=arrTwo;
+                        break;
+                    case body[2].name:
+                            arrTwo.push(arrTwos[5]);
+                            arrTwo.push(arrTwos[6]);
+                            obj.produce=arrTwo;
+                            break;
+                    case body[3].name:
+                            arrTwo.push(arrTwos[7]);
+                            obj.produce=arrTwo;
+                            break;
+                    case body[4].name:
+                            arrTwo.push(arrTwos[8]);
+                            arrTwo.push(arrTwos[9]);
+                            obj.produce=arrTwo;
+                            break;
+                }
+            }
+            
+        }
+        this.setState({arrClass:arrThree})
     }
     //获取分类详细产品
     getClassList(){
@@ -249,7 +252,7 @@ class Home extends Component{
             if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
-                console.log("fff=====hhhhhh====eeeeeeee",body);
+                //console.log("fff=====hhhhhh====eeeeeeee",body);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -271,6 +274,31 @@ class Home extends Component{
             }
         };
         //console.log("获取精品推荐列表");
+    }
+    //产品分类跳转
+    leapClass(index){
+        let arr=this.state.arrClass[index].name;
+        this.props.history.push("/productclass/"+arr);
+        //console.log("你点击了大分类按钮",index,arr);
+    }
+    leapMidClass(item,index){
+        let arrOne=this.state.arrClass[item].name;
+        let arrTwo=this.state.arrClass[item].produce[index].name;
+        let arr=[];
+        arr.push(arrOne);
+        arr.push(arrTwo);
+        this.props.history.push("/productclass/"+arr);
+        //console.log("你点击了中分类按钮",item,index,arrOne,arrTwo,arr);
+    }
+    leapSingle(clas,item,index){
+        let arrOne=this.state.arrClass[clas].name;
+        let number=item*4+index;
+        let arrTwo=this.state.arrProduct[clas].produce[number].name;
+        let arr=[];
+        arr.push(arrOne);
+        arr.push(arrTwo);
+        this.props.history.push("/productclass/"+arr);
+        //console.log("你点击了单个商品按钮",clas,item,index,number,arrTwo,arr);
     }
     //轮播图产品调用接口
     //热销产品接口调用
@@ -300,7 +328,7 @@ class Home extends Component{
                        arr=arr.concat(body)
                    }
                     _this.setState({arrCheap:body,arrBanner:arr,banner:"block"},()=>{
-                        console.log("yyyyyyyyy======",arr);
+                        //console.log("yyyyyyyyy======",arr);
                     })
                }
                if(value===0){
@@ -352,7 +380,7 @@ class Home extends Component{
     componentWillUnmount() {
         clearInterval(this.interval);
       }
-    mouseEnter9(index){
+    mouseEnterInform(index){
         clearInterval(this.interval);
         this.setState({counts:index})
     }
@@ -377,13 +405,11 @@ class Home extends Component{
             if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
-                //_this.setState({arrClass:arrThree})
                 if(body.length){
                     _this.props.history.push("/detail/"+body[0].id);
                 }else{
-                    this.props.history.push("/searchresult");
+                    _this.props.history.push("/noresult/"+searchWord);
                 }
-                console.log("fff====gggggg=====eeeeeeee",body,searchWord);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -404,14 +430,13 @@ class Home extends Component{
             }
             }
         };
-        console.log("您点击了搜索按钮",searchWord);
     }
-    mouseEnter4(index){
+    mouseEnterTop(index){
         let arr10=["none","none","none","none","none"];
         arr10[index]="flex";
         this.setState({arr9:arr10});
     }
-    mouseLeave4(){
+    mouseLeaveTop(){
         let arr10=["none","none","none","none","none"];
         this.setState({arr9:arr10});
     }
@@ -433,7 +458,7 @@ class Home extends Component{
           }
           let arr=this.state.arr130.slice(this.state.left,this.state.right);
           this.setState({arr13:arr});
-          console.log("你点击了获取left数据");
+          //console.log("你点击了获取left数据");
       }
       rightData(){
         let length=this.state.arr130.length-5;
@@ -448,10 +473,9 @@ class Home extends Component{
         }
         let arr=this.state.arr130.slice(this.state.left,this.state.right);
         this.setState({arr13:arr});
-        console.log("你点击了获取right数据");
+        //console.log("你点击了获取right数据");
     }
     render(){
-        //const showHide=this.state.showHide;
         const _this=this;
         return(
             <div className="home-container">
@@ -506,16 +530,16 @@ class Home extends Component{
                         <div className="home-tag-two"><Icon type="right" onClick={this.prev.bind(this)} style={{color:"#fff",fontSize:15}}/></div>   
                     </div>
                     
-                    <div className="home-slide-top"  onMouseLeave={this.mouseLeave4.bind(this)}>
+                    <div className="home-slide-top"  onMouseLeave={this.mouseLeaveTop.bind(this)}>
                         <div className="home-slide-appear">
                                 {
                                     this.state.arrClass.map((item,index)=>{
                                         return(
-                                            <div key={index}  onMouseEnter={_this.mouseEnter4.bind(_this,index)}>
-                                                <h3><a href={item.href1}>{item.name}</a></h3>
+                                            <div key={index}  onMouseEnter={_this.mouseEnterTop.bind(this,index)}>
+                                                <h3 onClick={_this.leapClass.bind(this,index)}><a href={item.href1}>{item.name}</a></h3>
                                                 <div>
                                                     {item.produce.map((item2,index2)=>{
-                                                        return <span key={index2}><a href={item2.href}>{item2.name}</a></span>
+                                                        return <span key={index2} onClick={_this.leapMidClass.bind(this,index,index2)}><a href={item2.href}>{item2.name}</a></span>
                                                     })}
                                                 </div>
                                             </div>
@@ -532,11 +556,9 @@ class Home extends Component{
                                                {
                                                     item.produce.slice(0,4).map((item2,index2)=>{
                                                         return (
-                                                            <div key={index2}>
-                                                                {/* <a href={item2.href}> */}
+                                                            <div key={index2} onClick={_this.leapSingle.bind(this,index,0,index2)}>
                                                                     <img src={item2.image}/>
                                                                     <span>{item2.name}</span>
-                                                                {/* </a> */}
                                                             </div>
                                                         )
                                                     })
@@ -548,11 +570,9 @@ class Home extends Component{
                                                     item.produce.slice(4,8).map((item2,index2)=>{
                                                        
                                                         return (
-                                                            <div key={index2}>
-                                                                {/* <a href={item2.href}> */}
+                                                            <div key={index2} onClick={_this.leapSingle.bind(this,index,1,index2)}>
                                                                     <img src={item2.image}/>
                                                                     <span>{item2.name}</span>
-                                                                {/* </a> */}
                                                             </div>
                                                         )
                                                     })
@@ -563,11 +583,9 @@ class Home extends Component{
                                                     item.produce.slice(8,12).map((item2,index2)=>{
                                                         
                                                         return (
-                                                            <div key={index2}>
-                                                                {/* <a href={item2.href}> */}
+                                                            <div key={index2} onClick={_this.leapSingle.bind(this,index,2,index2)}>
                                                                     <img src={item2.image}/>
                                                                     <span>{item2.name}</span>
-                                                                {/* </a> */}
                                                             </div>
                                                         )
                                                     })
@@ -578,11 +596,9 @@ class Home extends Component{
                                                     item.produce.slice(12,16).map((item2,index2)=>{
                                                        
                                                         return (
-                                                            <div key={index2}>
-                                                                {/* <a href={item2.href}> */}
+                                                            <div key={index2} onClick={_this.leapSingle.bind(this,index,3,index2)}>
                                                                     <img src={item2.image}/>
                                                                     <span>{item2.name}</span>
-                                                                {/* </a> */}
                                                             </div>
                                                         )
                                                     })
@@ -602,7 +618,7 @@ class Home extends Component{
                                 <div>
                                     <ul id="ul" ref={ref=>this.ul=ref} onMouseLeave={this.mouseLeave9.bind(this)}>
                                         {this.state.arr15.map((item,index)=>{
-                                              return (<li key={index} onMouseEnter={this.mouseEnter9.bind(this,index)}><a href={item.href}>{item.content}</a></li>)
+                                              return (<li key={index} onMouseEnter={this.mouseEnterInform.bind(this,index)}><a href={item.href}>{item.content}</a></li>)
                                         })}
                                     </ul>
                                 </div>

@@ -11,6 +11,7 @@ class Img extends Component {
       dataImg:[],
       numbers:0,
       nextNumber:0,
+      updateNumber:0,
       params: {
         // 放大倍数
         scale: 4,
@@ -110,9 +111,13 @@ class Img extends Component {
   
   // props 变化时更新
   componentWillReceiveProps(nextProps) {
-    //console.log(nextProps,this.props);
-    this.updataImg(nextProps);
     let _this=this;
+    let numberUpdate=this.state.updateNumber+1;
+    this.setState({updateNumber:numberUpdate},()=>{
+      if(_this.state.updateNumber===1){
+          _this.updataImg(nextProps);
+      }
+    })
     if(nextProps.transids){
       var url= "/api/mall/product/"+nextProps.transids;
       var xhr = new XMLHttpRequest();

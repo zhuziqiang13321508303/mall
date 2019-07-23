@@ -40,48 +40,42 @@ class Preview extends Component{
                 obj.amount=this.props.match.params.amount.split(",")[1]-0;
                 cart_items.push(obj);
                 console.log("zzzzz=======",cart_items)
-                this.setState({cart_items},()=>{+
+                this.setState({cart_items},()=>{
                     console.log(self.state.cart_items)
                     self.get_myself()
                 })
                 //this.getAddress();
-                if(this.state.addressList){
-                    this.setState({show:"block"})
-                }
+                // if(this.state.addressList.length){
+                //     this.setState({show:"block"})
+                // }
             }
             //获取个人信息
             get_myself(){//获取个人信息，拿到地址
-                let url="/api/mall/myself"
+                let url="/api/mall/myself";
                 var self=this
-                var callback=function(err,res){
-                    if(err){
-                        message.fail("个人信息获取失败")
-                    }else{
-                        console.log("ggggg=====",res.data,res.data.last_shipping_address)
-                        let arr=[];
-                        let recordss=res.data.last_shipping_address;
-                        arr.push(res.data,res.data.last_shipping_address);
-                        self.setState({
-                            records:res.data,
-                            addressList:arr,
-                            recipients:recordss.name,
-                            phones:recordss.phone,
-                            provinces:recordss.province,
-                            citys:recordss.city,
-                            areas:recordss.area,
-                            addresss:recordss.address,
-                        },self.get_msg)
-                    }
-                }
                 var xhr=new XMLHttpRequest()
                 xhr.open('GET',url)
                 xhr.send(null)
                 xhr.onreadystatechange=function(){
                     if(xhr.readyState === XMLHttpRequest.DONE) {
                         if(xhr.status === 200) {
-                            callback(null,JSON.parse(xhr.responseText)) 
+                            let res=JSON.parse(xhr.responseText);
+                            let arr=[];
+                            let recordss=res.data.last_shipping_address;
+                            arr.push(res.data.last_shipping_address);
+                            self.setState({
+                                records:res.data,
+                                addressList:arr,
+                                recipients:recordss.name,
+                                phones:recordss.phone,
+                                provinces:recordss.province,
+                                citys:recordss.city,
+                                areas:recordss.area,
+                                addresss:recordss.address,
+                            },self.get_msg)
+                            console.log("ggggg=====",res.data,res.data.last_shipping_address)
                         } else {
-                            callback(xhr.responseText,null);
+                            message.fail("个人信息获取失败");
                         }
                     }
                 }
@@ -91,16 +85,6 @@ class Preview extends Component{
                 let url="/api/mall/delivery_preview"
                 let self=this
                 let records=self.state.records.last_shipping_address;
-                var callback=function(err,res){
-                    if(err){
-                        message.fail("订单获取失败")
-                    }else{  console.log("aaaaa========",res.data,records)
-                    self.setState({
-                        datas:res.data,
-                        cartdata:res.data.items,
-                    },()=>console.log(self.state.datas,res.data.items))
-                    }
-                }
                 var xhr=new XMLHttpRequest()
                 let data=new FormData()
                 console.log(JSON.stringify(self.state.cart_items));
@@ -116,9 +100,14 @@ class Preview extends Component{
                 xhr.onreadystatechange=function(){
                     if(xhr.readyState === XMLHttpRequest.DONE) {
                         if(xhr.status === 200) {
-                            callback(null,JSON.parse(xhr.responseText)) 
+                            let res=JSON.parse(xhr.responseText);
+                            self.setState({
+                                datas:res.data,
+                                cartdata:res.data.items,
+                            })
+                            console.log("mmmm====",res);
                         } else {
-                            callback(xhr.responseText,null);
+                            message.fail("订单获取失败")
                         }
                     }
                 }
@@ -386,8 +375,8 @@ class Preview extends Component{
                 if(err){
                     message.fail("订单获取失败")
                 }else{
-                    //self.props.history.push("/orderlist");
-                    self.props.history.push("/order");
+                    self.props.history.push("/orderlist");
+                    //self.props.history.push("/order");
                 }
             }
             var xhr=new XMLHttpRequest()

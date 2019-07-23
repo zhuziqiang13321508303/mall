@@ -5,7 +5,7 @@ import TopMessage from "../assets/topMessage.jsx";
 import {NavLink} from "react-router-dom";
 import {message,Icon,Empty} from "antd";
 import '../css/searchResult.css';
-class SearchResult extends Component{
+class NoResult extends Component{
     constructor(props){
         super(props)
         this.state={
@@ -101,14 +101,16 @@ class SearchResult extends Component{
         console.log("获取商品类别");
     }
     render(){
+        console.log(this.props.match.params.word);
         let back=this.state.back;
         let forward=this.state.forward;
+        let words=this.props.match.params.word;
         return(
             <div className="search-container">
                <TopMessage/>
                <div className="search-nav">
                     <div className="search-nav-container" style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                        <Empty description="抱歉没有找到相关商品，为您推荐以下商品！"/>
+                        <Empty description={"抱歉没有找到"+words+"相关商品，为您推荐以下商品！"}/>
                     </div>
                </div>
                 <div className="search-section">
@@ -136,4 +138,4 @@ class SearchResult extends Component{
         )
     }
 }
-export default SearchResult;
+export default NoResult;

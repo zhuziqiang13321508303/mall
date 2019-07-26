@@ -8,6 +8,7 @@ import imgLogo from "../assets/images/hezhou.jpg";
 import $ from 'jquery';
 const { Step } = Steps;
 const { TextArea } = Input;
+let flaged=false;
 class PreviewList extends Component{
         constructor(props){
                 super(props);
@@ -25,7 +26,7 @@ class PreviewList extends Component{
                     names:'',
                     addresss:'',
                     records:'',
-                    //addressOne:[],
+                    p:0,
                 }
                 this.get_msg=this.get_msg.bind(this);
                 this.get_myself=this.get_myself.bind(this);
@@ -34,22 +35,18 @@ class PreviewList extends Component{
             }
             componentDidMount(){
                 let self=this
-                console.log(this.props.match.params.ids)
+                //console.log(this.props.match.params.ids)
                 let cart_items=this.props.match.params.ids.split(",").map((item)=>{
-                    console.log(item)
                     let cart_obj={}
                     cart_obj.id=item-0
                     return cart_obj
                 })
-                console.log("zzzzz=======",cart_items)
                 this.setState({cart_items},()=>{
-                    console.log(self.state.cart_items)
                     self.get_myself()
                 })
-                 //this.getAddress();
-                if(this.state.addressList){
-                    this.setState({show:"block"})
-                }
+                // if(this.state.addressList){
+                //     this.setState({show:"block"})
+                // }
             }
             //获取个人信息
             get_myself(){//获取个人信息，拿到地址
@@ -59,19 +56,16 @@ class PreviewList extends Component{
                     if(err){
                         message.fail("个人信息获取失败")
                     }else{
-                        console.log("ggggg=====",res.data,res.data.last_shipping_address)
+                        //console.log("ggggg=====",res.data,res.data.last_shipping_address)
                         let arr=[];
                         let recordss=res.data.last_shipping_address;
                         arr.push(res.data.last_shipping_address);
                         self.setState({
                             records:res.data,
                             addressList:arr,
-                            recipients:recordss.name,
-                            phones:recordss.phone,
                             provinces:recordss.province,
                             citys:recordss.city,
                             areas:recordss.area,
-                            addresss:recordss.address,
                         },self.get_msg)
                     }
                 }
@@ -97,13 +91,14 @@ class PreviewList extends Component{
                     if(err){
                         message.fail("订单获取失败")
                     }else{
-                        console.log("aaaaa========",res.data,records)
+                        //console.log("aaaaa========",res.data,records)
                         self.setState({
                             datas:res.data,
                             cartdata:res.data.items,
                            
-                        },()=>console.log(self.state.datas))
+                        })
                     }
+                    console.log(res);
                 }
                 var xhr=new XMLHttpRequest()
                 let data=new FormData()
@@ -114,13 +109,15 @@ class PreviewList extends Component{
                 data.append('city',records.city)
                 data.append('area',records.area)
                 data.append('address',records.address)
-                console.log("zzzzzz=====zzzzzz",JSON.stringify(self.state.cart_items),records.name,records.phone,records.province,records.city,records.area,records.address);
+                //console.log("zzzzzz=====zzzzzz",JSON.stringify(self.state.cart_items),records.name,records.phone,records.province,records.city,records.area,records.address);
                 xhr.open('POST',url)
                 xhr.send(data)
                 xhr.onreadystatechange=function(){
                     if(xhr.readyState === XMLHttpRequest.DONE) {
                         if(xhr.status === 200) {
-                            callback(null,JSON.parse(xhr.responseText)) 
+                            callback(null,JSON.parse(xhr.responseText))
+                            self.getAddress();
+                            $("#list li").eq(0).addClass('listname').siblings().removeClass('listname'); 
                         } else {
                             callback(xhr.responseText,null);
                         }
@@ -132,12 +129,12 @@ class PreviewList extends Component{
                 this.setState({
                     showss:false,
                     visible: true,
+                    flag:false,
                 });
               };
             //省市区三级联动
             onChange(value){
-                this.setState({province:value[0],city:value[1],area:value[2]})
-                console.log(value,value[0],value[1],value[2],this.optionadd);  
+                this.setState({province:value[0],city:value[1],area:value[2]}) 
             }
             //获取地址列表
             getAddress(){
@@ -152,13 +149,11 @@ class PreviewList extends Component{
                         let body=JSON.parse(xhr.responseText).data;
                         _this.setState({addressList:body},function(){
                             if(_this.state.addressList.length>2){
-                                console.log("77777=====");
                                 _this.setState({lengths:true})
                             }else{
                                 _this.setState({lengths:false})
                             }
                         })
-                        console.log("fff=========",body);
                     }else if (xhr.status === 401) {
                         console.error(xhr.responseText);
                         var code = null;
@@ -179,7 +174,7 @@ class PreviewList extends Component{
                     }
                     }
                 };
-                console.log("获取地址列表");
+                //console.log("获取地址列表");
             }
             //添加地址
             handleOk(value){
@@ -210,10 +205,9 @@ class PreviewList extends Component{
                             let arr= _this.state.addressList;
                             arr.push(obj)
                             _this.setState({addressList:arr});
-                            console.log("eee=========",body);
                             _this.getAddress();
                         }else if (xhr.status === 401) {
-                            console.error(xhr.responseText);
+                            //console.error(xhr.responseText);
                             var code = null;
                             try{
                                 code = JSON.parse(xhr.responseText)["code"];
@@ -257,7 +251,7 @@ class PreviewList extends Component{
                         if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
                             let body=xhr.responseText;
-                            console.log("eeeffffff=========",body);
+                            //console.log("eeeffffff=========",body);
                             _this.getAddress();
                         }else if (xhr.status === 401) {
                             console.error(xhr.responseText);
@@ -289,12 +283,12 @@ class PreviewList extends Component{
             };
             //编辑地址按钮
             edits(index){
-                console.log("333-=======",index);
+                flaged=true;
                 for(let j=0;j<this.state.addressList.length;j++){
                     if(this.state.addressList[j].id===index){
                     let obj=this.state.addressList[j];
                     let residences=''+obj.province+"/"+obj.city+"/"+obj.area;
-                    console.log("objjjj=====",obj,residences);
+                    //console.log("objjjj=====",obj,residences);
                     this.setState({
                         visible: true,
                         showss:true,
@@ -308,22 +302,28 @@ class PreviewList extends Component{
                     }) 
                     }
                 }
+                   console.log("jcbdfjvnudfjcujf",flaged);
             }
             //删除地址按钮
-            confirm(index){
+            confirm(id,index){
                 let _this=this;
-                var url= "/api/mall/shipping_address/"+index;
+                var url= "/api/mall/shipping_address/"+id;
+                console.log("bbbbbbbb======",index);
+                if(_this.state.addressList.length-1==index){
+                    $("#list li").eq(index-1).addClass('listname').siblings().removeClass('listname');
+                    this.setState({
+                        p:index-1
+                    })
+                }
                 var xhr = new XMLHttpRequest(); 
                 xhr.open("DELETE", url,true);
                 xhr.send();
-                console.log("hcbfdshcbd",index);
+                //console.log("hcbfdshcbd",index);
                 xhr.onreadystatechange = function(){
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         let arr=_this.state.addressList;
-                        console.log("llll======",arr);
                         arr.splice(index,1);
-                        console.log("2222======",arr);
                         _this.setState({addressList:arr});
                         _this.getAddress();
                     }else if (xhr.status === 401) {
@@ -346,19 +346,21 @@ class PreviewList extends Component{
                     }
                     }
                 };
-                this.getAddress();
+                //this.getAddress();
             }
             //取消地址增加
             handleCancel(e){
-                console.log(e);
+                //console.log(e);
                 this.setState({
                 visible: false,
                 flag:false,
                 });
+                console.log("kfgkbjifjb======",this.from);
+                this.from.resetFields();
             };
             //获取子元素数据按钮
             getValue(value,hide){
-                console.log(value,hide);
+                //console.log(value,hide);
                 this.setState({
                     visible:hide
                 })
@@ -367,11 +369,11 @@ class PreviewList extends Component{
                 }
                
             }
-            onCancels(){
-                this.setState({
-                    visible: false,
-                });
-            }
+            // onCancels(){
+            //     this.setState({
+            //         visible: false,
+            //     });
+            // }
             //计算初始商品总金额
             grossMoney(){
                     let arr=this.state.cartdata;
@@ -415,28 +417,22 @@ class PreviewList extends Component{
                         }
                     }
                 }
-                console.log("你点击了提交订单按钮");
+                //console.log("你点击了提交订单按钮");
             }
             cancel(){
                 console.log("你点击了取消按钮");
               }
               //地址改变按钮
               varyAddress(index){
-                  $("#list li").eq(index).addClass('listname').siblings().removeClass('listname');
-                this.setState({
-                    recipients:this.state.addressList[index].name,
-                    phones:this.state.addressList[index].phone,
-                    provinces:this.state.addressList[index].province,
-                    citys:this.state.addressList[index].city,
-                    areas:this.state.addressList[index].area,
-                    addresss:this.state.addressList[index].address,
-                })
-                console.log("你点击了地址改变按钮",index,this.state.addressList[index],$("#list"), $("#list li").eq(index));
+                    $("#list li").eq(index).addClass('listname').siblings().removeClass('listname');
+                    this.setState({
+                        p:index
+                    })
               }
         render(){
             let _this=this;
-            console.log("又刷新了一次");
-            let styles=this.state.lengths?{position:"absolute",top:54,right:180,width:146,height:30,lineHeight:"30px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"}:{width:240,height:120,lineHeight:"120px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"};
+            //console.log("又刷新了一次");
+            let styles=this.state.lengths?{position:"absolute",top:11,right:180,width:146,height:30,lineHeight:"30px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"}:{width:240,height:120,lineHeight:"120px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"};
             return(
                 <div>
                     <div className="top-nav">
@@ -466,7 +462,7 @@ class PreviewList extends Component{
                                 <ul id="list">
                                     {
                                         this.state.addressList.map((item,index)=>{
-                                        return (<li key={index} onClick={this.varyAddress.bind(this,index)}>
+                                        return (<li key={index} onMouseEnter={this.varyAddress.bind(this,index)}>
                                                 <div>
                                                     <span>{item.name}</span>
                                                     <span>{item.phone}</span>
@@ -478,7 +474,7 @@ class PreviewList extends Component{
                                                     <i>
                                                         <Popconfirm
                                                         title="确定要删除吗"
-                                                        onConfirm={this.confirm.bind(this,item.id)}
+                                                        onConfirm={this.confirm.bind(this,item.id,index)}
                                                         onCancel={this.cancel.bind(this)}
                                                         okText="Yes"
                                                         cancelText="No"
@@ -502,7 +498,14 @@ class PreviewList extends Component{
                             onCancel={this.handleCancel.bind(this)}
                             footer={null}
                             >
-                                <WrappedRegistrationForm nickname={this.state.showss?this.state.names:''} phone={this.state.showss?this.state.phones:''} residence={this.state.showss?this.state.residence:''} address={this.state.showss?this.state.address:''} getValue={this.getValue.bind(this)}/>
+                                <WrappedRegistrationForm 
+                                nickname={this.state.showss?this.state.names:''} 
+                                phone={this.state.showss?this.state.phones:''} 
+                                residence={this.state.showss?this.state.residence:''} 
+                                address={this.state.showss?this.state.address:''} 
+                                getValue={this.getValue.bind(this)} 
+                                ref={ref=>this.from=ref}
+                                />
                             </Modal>
                         </div>
                     </div>
@@ -545,9 +548,9 @@ class PreviewList extends Component{
                                     <div>可获得积分:{5000}</div>
                                 </div>
                                 <div className="previewlist-address-again">
-                                    <div>配送至：{this.state.addresss}</div>
-                                    <span>{this.state.recipients}</span>
-                                    <span>{this.state.phones}</span>
+                                    <div>配送至：{this.state.addressList.length>=this.state.p+1?this.state.addressList[this.state.p].address:''}</div>
+                                    <span>{this.state.addressList.length>=this.state.p+1?this.state.addressList[this.state.p].name:''}</span>
+                                    <span>{this.state.addressList.length>=this.state.p+1?this.state.addressList[this.state.p].phone:''}</span>
                                 </div>
                                 <Button onClick={this.submitOrder.bind(this)}>提交订单</Button>
                             </div>
@@ -567,61 +570,50 @@ constructor(props){
     super(props);
     this.state = {
         confirmDirty: false,
-        autoCompleteResult: [],
-        // nickname:this.props.nickname,
-        // phone:this.props.phone,
-        // address:this.props.address,
-        // residence:this.props.residence
+        nickname:this.props.nickname,
+        phone:this.props.phone,
+        address:this.props.address,
+        residence:this.props.residence,
       };
+      //this.changeData=this.changeData.bind(this);
 }
-  handleSubmit(e){
+handleSubmit(e){
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
           let hide=false;
         this.props.getValue(values,hide);
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values,this.props.form);
       }
     });
-  };
-  //取消按钮
-  cancel(){
-      let hide=false;
-      this.props.getValue('',hide);
-      console.log("你点击了取消按钮");
+    this.props.form.resetFields();
   }
-  componentWillReceiveProps(){
-    console.log("oooooooooooooo=========",this.props);
-    this.setState({
-        nickname:this.props.nickname,
-        phone:this.props.phone,
-        address:this.props.address,
-        residence:this.props.residence,
-    })
-};
+//   componentWillReceiveProps(){
+//     console.log("oooooooooooooo=========",this.props);
+//    this.changeData();
+// };
   render(){
     const { getFieldDecorator } = this.props.form;
-    const { autoCompleteResult } = this.state;
     console.log(this.props);
     const formItemLayout = {
         labelCol: {
           xs: { span: 24 },
-          sm: { span: 8 },
+          sm: { span: 4 },
         },
         wrapperCol: {
           xs: { span: 24 },
-          sm: { span: 16 },
+          sm: { span: 20 },
         },
       };
       const tailFormItemLayout = {
         wrapperCol: {
           xs: {
             span: 24,
-            offset: 0,
+            offset: 24,
           },
           sm: {
-            span: 16,
-            offset: 8,
+            span: 24,
+            offset:0,
           },
         },
       };
@@ -658,15 +650,9 @@ constructor(props){
           })(<Input/>)}
         </Form.Item>
         <Form.Item >
-           
           <Button type="primary" htmlType="submit" {...tailFormItemLayout}>
             保存并使用
           </Button>
-        </Form.Item>
-        <Form.Item>
-            <Button type="primary" onClick={this.cancel.bind(this)} {...tailFormItemLayout}>
-                取消
-            </Button>
         </Form.Item>
       </Form>
     );

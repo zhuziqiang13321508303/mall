@@ -111,6 +111,7 @@ class ProductClass extends Component{
             
         }
         this.handleDetail(arrThree);
+        console.log(arrThree);
     }
     //处理url参数
     handleDetail(arrThree){
@@ -119,11 +120,13 @@ class ProductClass extends Component{
         let lengthss=stringArr.length;
         arrLength.push("首页");
         arrLength=arrLength.concat(stringArr);
+        console.log("gggggg======",stringArr,lengthss,arrLength);
         for(let m=0;m<arrThree.length;m++){
             if(arrLength[1]===arrThree[m].name){
                 let arrNavs=["全部"];
                 for(let n=0;n<arrThree[m].produce.length;n++){
                     arrNavs.push(arrThree[m].produce[n].name);
+                    console.log("kkkkkkk",arrThree[m].produce[n].name);
                 }
                 this.setState({arrClassList:arrThree,arrNav:arrLength,lens:lengthss,arrName:arrNavs})
             }
@@ -131,8 +134,10 @@ class ProductClass extends Component{
                 if(stringArr[lengthss-1]===arrThree[m].produce[n].name){
                     console.log("lengthsslengthsslengthss",stringArr[lengthss-1],arrThree[m].produce[n].name,n);
                     $("#fontcolor span").eq(n+2).css({"color":"red"}).siblings().css({"color":"#333"});
+                    return;
                 }else{
                     $("#fontcolor span").eq(1).css({"color":"red"}).siblings().css({"color":"#333"});
+                    console.log("llll=====aaaaaa");
                 }
             }
         }

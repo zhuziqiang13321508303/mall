@@ -22,7 +22,7 @@ import OrderList from './pages/Orderlist.jsx';
 import PreviewList from './pages/previewlist.jsx';
 import Preview from './pages/preview.jsx';
 import Email from './pages/email.jsx';
-import CheapProduct from './pages/cheapProduct.jsx';
+// import CheapProduct from './pages/cheapProduct.jsx';
 import ProductClass from './pages/productClass.jsx';
 import NoResult from './pages/noResult.jsx';
 class App extends React.Component{
@@ -50,7 +50,7 @@ class App extends React.Component{
                         <Route path="/previewlist/:ids" component={PreviewList}></Route>
                         <Route path="/preview/:amount" component={Preview}></Route>
                         <Route path="/email" component={Email}></Route>
-                        <Route path="/cheapproduct/:1" component={CheapProduct}></Route>
+                        {/* <Route path="/detail/:id" component={Detail}></Route> */}
                         <Route path="/productclass/:productclass" component={ProductClass}></Route>
                         <Route path="/noresult/:word" component={NoResult}></Route>
                         <Redirect to='/home'/>

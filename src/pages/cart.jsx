@@ -310,10 +310,10 @@ class Cart extends Component{
     
       handleScroll(e){
           let _this=this;
-        if(e.srcElement.scrollingElement.scrollHeight-e.srcElement.scrollingElement.scrollTop>730){
+        if(e.srcElement.scrollingElement.scrollHeight-e.srcElement.scrollingElement.scrollTop>1200){
                 _this.setState({styles:"fixed"});
                 //console.log(e.srcElement.scrollingElement.scrollHeight-e.srcElement.scrollingElement.scrollTop)
-        }if(e.srcElement.scrollingElement.scrollHeight-e.srcElement.scrollingElement.scrollTop<700){
+        }if(e.srcElement.scrollingElement.scrollHeight-e.srcElement.scrollingElement.scrollTop<1200){
             _this.setState({styles:''})
         }
       }

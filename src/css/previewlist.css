@@ -51,6 +51,7 @@
     box-sizing:border-box;
     padding:40px 40px 16px;
     display:flex;
+    position:relative;
 }
 .previewlist-address-display{
     width:120px;
@@ -109,9 +110,6 @@
     outline:none;
     margin-left:30px;
 } 
-/* .ant-cascader-picker-label{
-    left:30px;
-} */
 /* 订单商品 */
 .previewlist-product-list{
     width:100%;
@@ -217,4 +215,8 @@
     font-size: 18px;
     border-radius: 2px;
     margin-left:128px;
+}
+/* cascader样式 */
+.ant-cascader-menus{
+    max-width:440px !important;
 }

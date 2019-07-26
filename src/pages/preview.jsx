@@ -25,6 +25,7 @@ class Preview extends Component{
                     names:'',
                     addresss:'',
                     records:'',
+                    p:0,
                 }
                 this.get_msg=this.get_msg.bind(this);
                 this.get_myself=this.get_myself.bind(this);
@@ -66,12 +67,12 @@ class Preview extends Component{
                             self.setState({
                                 records:res.data,
                                 addressList:arr,
-                                recipients:recordss.name,
-                                phones:recordss.phone,
+                                //recipients:recordss.name,
+                                //phones:recordss.phone,
                                 provinces:recordss.province,
                                 citys:recordss.city,
                                 areas:recordss.area,
-                                addresss:recordss.address,
+                                //addresss:recordss.address,
                             },self.get_msg)
                             console.log("ggggg=====",res.data,res.data.last_shipping_address)
                         } else {
@@ -105,6 +106,8 @@ class Preview extends Component{
                                 datas:res.data,
                                 cartdata:res.data.items,
                             })
+                            self.getAddress();
+                            $("#list li").eq(0).addClass('listname').siblings().removeClass('listname'); 
                             console.log("mmmm====",res);
                         } else {
                             message.fail("订单获取失败")
@@ -117,6 +120,7 @@ class Preview extends Component{
                 this.setState({
                     showss:false,
                     visible: true,
+                    flag:false,
                 });
             };
         //省市区三级联动
@@ -295,9 +299,15 @@ class Preview extends Component{
             }
         }
         //删除地址按钮
-        confirm(index){
+        confirm(id,index){
             let _this=this;
-            var url= "/api/mall/shipping_address/"+index;
+            var url= "/api/mall/shipping_address/"+id;
+            if(_this.state.addressList.length-1==index){
+                $("#list li").eq(index-1).addClass('listname').siblings().removeClass('listname');
+                this.setState({
+                    p:index-1
+                })
+            }
             var xhr = new XMLHttpRequest(); 
             xhr.open("DELETE", url,true);
             xhr.send();
@@ -340,6 +350,7 @@ class Preview extends Component{
                 visible: false,
                 flag:false,
                 });
+                this.from.resetFields();
           };
           //获取子元素数据按钮
           getValue(value,hide){
@@ -351,11 +362,6 @@ class Preview extends Component{
                 this.handleOk(value);
             }
            
-        }
-        onCancels(){
-            this.setState({
-                visible: false,
-            });
         }
           //计算初始商品总金额
           grossMoney(){
@@ -409,14 +415,9 @@ class Preview extends Component{
            //地址改变按钮
            varyAddress(index){
             $("#list li").eq(index).addClass('listname').siblings().removeClass('listname');
-          this.setState({
-              recipients:this.state.addressList[index].name,
-              phones:this.state.addressList[index].phone,
-              provinces:this.state.addressList[index].province,
-              citys:this.state.addressList[index].city,
-              areas:this.state.addressList[index].area,
-              addresss:this.state.addressList[index].address,
-          })
+                    this.setState({
+                        p:index
+                    })
           console.log("你点击了地址改变按钮",index,this.state.addressList[index],$("#list"), $("#list li").eq(index));
         }
         //删除预览商品按钮
@@ -426,7 +427,7 @@ class Preview extends Component{
         render(){
             let _this=this;
             console.log("又刷新了一次");
-            let styles=this.state.lengths?{position:"absolute",top:10,right:180,width:146,height:30,lineHeight:"30px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"}:{width:240,height:120,lineHeight:"120px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"};
+            let styles=this.state.lengths?{position:"absolute",top:11,right:180,width:146,height:30,lineHeight:"30px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"}:{width:240,height:120,lineHeight:"120px",textAlign:"center",color:"#666",fontSize:14,cursor:"pointer",border:"1px solid #333"};
             return(
                 <div>
                     <div className="top-nav">
@@ -456,7 +457,7 @@ class Preview extends Component{
                                 <ul id="list">
                                     {
                                         this.state.addressList.map((item,index)=>{
-                                        return (<li key={index} onClick={this.varyAddress.bind(this,index)}>
+                                        return (<li key={index} onMouseEnter={this.varyAddress.bind(this,index)}>
                                                 <div>
                                                     <span>{item.name}</span>
                                                     <span>{item.phone}</span>
@@ -468,7 +469,7 @@ class Preview extends Component{
                                                     <i>
                                                         <Popconfirm
                                                         title="确定要删除吗"
-                                                        onConfirm={this.confirm.bind(this,item.id)}
+                                                        onConfirm={this.confirm.bind(this,item.id,index)}
                                                         onCancel={this.cancel.bind(this)}
                                                         okText="Yes"
                                                         cancelText="No"
@@ -491,7 +492,14 @@ class Preview extends Component{
                             onCancel={this.handleCancel.bind(this)}
                             footer={null}
                             >
-                                <WrappedRegistrationForm nickname={this.state.showss?this.state.names:''} phone={this.state.showss?this.state.phones:''} residence={this.state.showss?this.state.residence:''} address={this.state.showss?this.state.address:''} getValue={this.getValue.bind(this)}/>
+                                <WrappedRegistrationForm 
+                                nickname={this.state.showss?this.state.names:''} 
+                                phone={this.state.showss?this.state.phones:''} 
+                                residence={this.state.showss?this.state.residence:''} 
+                                address={this.state.showss?this.state.address:''} 
+                                getValue={this.getValue.bind(this)}
+                                ref={ref=>this.from=ref}
+                                />
                             </Modal>
                         </div>
                     </div>
@@ -535,9 +543,9 @@ class Preview extends Component{
                                     <div>可获得积分:{5000}</div>
                                 </div>
                                 <div className="previewlist-address-again">
-                                    <div>配送至：{this.state.addresss}</div>
-                                    <span>{this.state.recipients}</span>
-                                    <span>{this.state.phones}</span>
+                                    <div>配送至：{this.state.addressList.length?this.state.addressList[this.state.p].address:''}</div>
+                                    <span>{this.state.addressList.length?this.state.addressList[this.state.p].name:''}</span>
+                                    <span>{this.state.addressList.length?this.state.addressList[this.state.p].phone:''}</span>
                                 </div>
                                 <Button onClick={this.submitOrder.bind(this)}>提交订单</Button>
                             </div>
@@ -573,13 +581,8 @@ constructor(props){
         console.log('Received values of form: ', values);
       }
     });
+    this.props.form.resetFields();
   };
-  //取消按钮
-  cancel(){
-      let hide=false;
-      this.props.getValue('',hide);
-      console.log("你点击了取消按钮");
-  }
   componentWillReceiveProps(){
     console.log("oooooooooooooo=========",this.props);
     this.setState({
@@ -596,23 +599,11 @@ constructor(props){
     const formItemLayout = {
         labelCol: {
           xs: { span: 24 },
-          sm: { span: 8 },
+          sm: { span: 4 },
         },
         wrapperCol: {
           xs: { span: 24 },
-          sm: { span: 16 },
-        },
-      };
-      const tailFormItemLayout = {
-        wrapperCol: {
-          xs: {
-            span: 24,
-            offset: 0,
-          },
-          sm: {
-            span: 16,
-            offset: 8,
-          },
+          sm: { span: 20 },
         },
       };
     const prefixSelector = getFieldDecorator('prefix', {
@@ -649,14 +640,9 @@ constructor(props){
         </Form.Item>
         <Form.Item >
            
-          <Button type="primary" htmlType="submit" {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit">
             保存并使用
           </Button>
-        </Form.Item>
-        <Form.Item>
-            <Button type="primary" onClick={this.cancel.bind(this)} {...tailFormItemLayout}>
-                取消
-            </Button>
         </Form.Item>
       </Form>
     );

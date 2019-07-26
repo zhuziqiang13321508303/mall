@@ -44,7 +44,7 @@ class Home extends Component{
         counts:0,
         left:0,
         right:5,
-        arrCheaps:[],
+        // arrCheaps:[],
         arrCheap:[],
         arrBanner:[],
         banner:"none",
@@ -139,7 +139,7 @@ class Home extends Component{
                     arr.push(obj);
                 }
                 _this.setState({arrProduct:arr});
-                //console.log("fff=========eeeeeeee",body,arr);
+                console.log("fff=========eeeeeeee",body,arr);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -174,6 +174,7 @@ class Home extends Component{
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
                _this.handleData(body);
+               console.log("oooppppp====",body);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -331,12 +332,12 @@ class Home extends Component{
                         console.log("yyyyyyyyy======",arr);
                     })
                }
-               if(value===0){
-                   _this.setState({
-                        arrCheaps:body
-                   })
-                   console.log("ooooo===",body);
-               }
+            //    if(value===0){
+            //        _this.setState({
+            //             arrCheap:body
+            //        })
+            //        console.log("ooooo===",body);
+            //    }
                 //console.log("fff=========",body);
             }else if (xhr.status === 401) {
                 //console.error(xhr.responseText);
@@ -479,13 +480,15 @@ class Home extends Component{
         const _this=this;
         return(
             <div className="home-container">
-                  <NavLink to="/cheapproduct/1">
-                        <div className="home-top" title="荣耀" style={{display:this.state.show}}>
-                                <div className="home-top-word"><a href="#">荣耀20系列新品开售享2999元豪礼</a></div>
-                                <div className="home-top-close" title="关闭" onClick={this.topclose.bind(this)}>X</div>
+                <div className="home-top-cheap" style={{display:this.state.show}}>
+                    <div className="home-top-close" title="关闭" onClick={this.topclose.bind(this)}>X</div>
+                    <NavLink to={this.state.arrCheap[0]?"/detail/"+this.state.arrCheap[0].product_id:''}>
+                            <div className="home-top" title="荣耀">
+                                <div className="home-top-word">{this.state.arrCheap[0]?this.state.arrCheap[0].name:''}</div>
                                 <img src={this.state.arrCheap[0]?this.state.arrCheap[0].image:''} className="home-top-image"/>
-                        </div>
-                </NavLink>
+                            </div>
+                    </NavLink>
+                </div>  
                 <div className="top-nav">
                     <div className="top-nav-container">
                         <TopMessage/>

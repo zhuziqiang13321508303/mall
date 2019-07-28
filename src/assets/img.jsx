@@ -112,13 +112,13 @@ class Img extends Component {
   // props 变化时更新
   componentWillReceiveProps(nextProps) {
     let _this=this;
-    // let numberUpdate=this.state.updateNumber+1;
-    // this.setState({updateNumber:numberUpdate},()=>{
-    //   if(_this.state.updateNumber===1){
-    //       _this.updataImg(nextProps);
-    //   }
-    // })
-    this.updataImg(nextProps);
+    let numberUpdate=this.state.updateNumber+1;
+    this.setState({updateNumber:numberUpdate},()=>{
+      if(_this.state.updateNumber===10){
+          _this.updataImg(nextProps);
+      }
+    })
+    //this.updataImg(nextProps);
     if(nextProps.transids){
       var url= "/api/mall/product/"+nextProps.transids;
       var xhr = new XMLHttpRequest();

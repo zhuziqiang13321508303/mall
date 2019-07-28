@@ -19,6 +19,11 @@ class ProductClass extends Component{
             infos:'',
             arrClassList:[],
             lens:0,
+            arrNavFlag:true,
+            //arrNavFlagss:"block",
+            arrSmallNav:[],
+            arrBridge:[],
+            count:0,
         }
         this.getClass=this.getClass.bind(this);
         this.changeNumber=this.changeNumber.bind(this);
@@ -45,6 +50,7 @@ class ProductClass extends Component{
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
                 _this.handleData(body);
+                console.log(body);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -115,7 +121,8 @@ class ProductClass extends Component{
     }
     //处理url参数
     handleDetail(arrThree){
-        let arrLength=this.state.arrNav;
+        //let arrLength=this.state.arrNav;
+        let arrLength=this.state.arrBridge;
         let stringArr=this.props.match.params.productclass.split(",");
         let lengthss=stringArr.length;
         arrLength.push("首页");
@@ -128,7 +135,7 @@ class ProductClass extends Component{
                     arrNavs.push(arrThree[m].produce[n].name);
                     console.log("kkkkkkk",arrThree[m].produce[n].name);
                 }
-                this.setState({arrClassList:arrThree,arrNav:arrLength,lens:lengthss,arrName:arrNavs})
+                this.setState({arrClassList:arrThree,arrNav:arrLength,arrBridge:arrLength,lens:lengthss,arrName:arrNavs})
             }
             for(let n=0;n<arrThree[m].produce.length;n++){
                 if(stringArr[lengthss-1]===arrThree[m].produce[n].name){
@@ -144,8 +151,42 @@ class ProductClass extends Component{
     }
     //导航栏字体颜色改变按钮
     changeColor(index){
+        //location.reload();
+        console.log(this.state.arrClassList);
+        let stringArr=this.props.match.params.productclass.split(",");
+        let arr=[];
+        let counts=this.state.count;
+        counts++;
+        arr[0]=stringArr[0];
+       
+        arr[1]=this.state.arrName[index];
+        this.props.history.push("/productclass/"+arr);
+        if(this.state.arrName[index]==="全部"){
+            if(this.state.arrNavFlag&&this.state.arrNav.length>2){
+                let arrSmallNavs=[];
+                let arrSmallNav=this.state.arrNav;
+                for(let j=0;j<arrSmallNav.length-1;j++){
+                    arrSmallNavs.push(this.state.arrNav[j]);
+                }
+                this.setState({arrNavFlag:false,arrNav:arrSmallNavs});
+                console.log(arrSmallNavs,this.state.arrNav);
+            }
+        }else{
+            if(stringArr.length===1){
+                for(let m=0;m<this.state.arrClassList.length;m++){
+                    if(stringArr[0]==this.state.arrClassList[m].name&&counts==1){
+                        this.state.arrNav.splice(1,0,stringArr[0]);
+                        console.log("nnnnnnnn",stringArr[0]);
+                    }
+                }
+            }
+            let arrBridges=this.state.arrBridge;
+            arrBridges.pop();
+            arrBridges.push(this.state.arrName[index]);
+            this.setState({arrNavFlag:true,arrNav:arrBridges});
+        }
         $("#fontcolor span").eq(index+1).css({"color":"red"}).siblings().css({"color":"#333"});
-        //console.log("你点击了改变导航栏字体颜色按钮",index);
+        console.log("你点击了改变导航栏字体颜色按钮",index,this.state.arrName,this.state.arrNav,stringArr,arr);
     }
      //调取购物车中商品
      changeNumber(){

@@ -28,8 +28,8 @@ class Home extends Component{
             {img:'#',tip:"荣耀数码",href:"#"},{img:'#',tip:"华为数码",href:"#"}
           ],
         arrHot:[],
-        arr13:[],
-        arr130:[],
+        arrRefine:[],
+        arrbridge:[],
         arr14:[
             {title:"购物相关",produce:[{tip:"鼠标1",href:"#"},{tip:"移动电源1",href:"#"},{tip:"手机2",href:"#"},{tip:"鼠标2",href:"#"}]},
             {title:"保修与退换货",produce:[{tip:"鼠标1",href:"#"},{tip:"移动电源1",href:"#"},{tip:"手机2",href:"#"},{tip:"鼠标2",href:"#"}]},
@@ -77,7 +77,11 @@ class Home extends Component{
         this.recommend(2);
         this.recommend(1);
         this.recommend(0);
-        this.get();
+        this.get(1);
+        this.get(3);
+        this.get(4);
+        //this.get(5);
+        //this.get(6);
         this.changeNumber();
         this.getClass();
         this.getClassList();
@@ -122,24 +126,52 @@ class Home extends Component{
         //console.log("aaaa++++++=====oooooopppp=");
     }
     //获取产品列表
-    get(){
+    get(index){
         let  _this=this;
-        var url= "/api/mall/product";
+        var url= "/api/mall/product?level_1_class="+index;
         var xhr = new XMLHttpRequest(); 
         xhr.open("get", url,true);
         xhr.send();
         xhr.onreadystatechange = function(){
-            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.readyState === XMLHttpRequest.DONE){
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
-                let arr=[];
-                for(let j=1;j<6;j++){
+                let arrAll=[];
+                if(index==1){
                     let obj={};
-                    obj.produce=body.slice(0*j,4*j);
-                    arr.push(obj);
+                     obj.produce=body;  
+                     _this.state.arrProduct[0]=obj;
+                     console.log(obj,arrAll); 
                 }
-                _this.setState({arrProduct:arr});
-                console.log("fff=========eeeeeeee",body,arr);
+                if(index==3){
+                    let obj={};
+                    obj.produce=body; 
+                    _this.state.arrProduct[1]=obj;
+                    console.log(obj,arrAll);  
+                }
+                if(index==4){
+                    let obj={};
+                    obj.produce=body; 
+                    _this.state.arrProduct[2]=obj;  
+                    console.log(obj,arrAll); 
+                }
+                if(index==5){
+                    let obj={};
+                    obj.produce=body; 
+                    _this.state.arrProduct[3]=obj;  
+                }
+                if(index==6){
+                    let arr=[],obj={};
+                    // for(let i=0;i<body.length;i++){
+                    //     arr.push(body[i]);
+                    // }
+                    obj.produce=body; 
+                    _this.state.arrProduct[4]=obj;  
+                }
+                if(arrAll.length===3){
+                    _this.setState({arrProduct});
+                }
+                console.log("fff=========eeeeeeee",body,arrAll);
             }else if (xhr.status === 401) {
                 console.error(xhr.responseText);
                 var code = null;
@@ -315,29 +347,30 @@ class Home extends Component{
             if (xhr.status === 200) {
                 let body=JSON.parse(xhr.responseText).data;
                 if(value===3){
-                    _this.setState({arr130:body},()=>{
-                        let arr=_this.state.arr130.slice(0,5);
-                        _this.setState({arr13:arr});
+                    _this.setState({arrbridge:body},()=>{
+                        let arr=_this.state.arrbridge.slice(0,5);
+                        _this.setState({arrRefine:arr});
                     });
+                    console.log(33333333,body);
                 }
                if(value===2){
                    _this.setState({arrHot:body})
+                   console.log(222222222,body);
                }
                if(value===1){
-                   let arr=[];
-                   for(let m=0;m<5;m++){
-                       arr=arr.concat(body)
-                   }
-                    _this.setState({arrCheap:body,arrBanner:arr,banner:"block"},()=>{
-                        console.log("yyyyyyyyy======",arr);
-                    })
+                //    let arr=[];
+                //    for(let m=0;m<5;m++){
+                //        arr=arr.concat(body)
+                //    }
+                    _this.setState({arrBanner:body,banner:"block"})
+                    console.log(11111111,body);
                }
-            //    if(value===0){
-            //        _this.setState({
-            //             arrCheap:body
-            //        })
-            //        console.log("ooooo===",body);
-            //    }
+               if(value===0){
+                   _this.setState({
+                        arrCheap:body
+                   })
+                   console.log(44444444,body);
+               }
                 //console.log("fff=========",body);
             }else if (xhr.status === 401) {
                 //console.error(xhr.responseText);
@@ -457,23 +490,23 @@ class Home extends Component{
           }else{
               this.setState({left:0,right:5})
           }
-          let arr=this.state.arr130.slice(this.state.left,this.state.right);
-          this.setState({arr13:arr});
+          let arr=this.state.arrbridge.slice(this.state.left,this.state.right);
+          this.setState({arrRefine:arr});
           //console.log("你点击了获取left数据");
       }
       rightData(){
-        let length=this.state.arr130.length-5;
+        let length=this.state.arrbridge.length-5;
         if(this.state.right<=length){
             let lefts=this.state.left+5;
             let rights=this.state.right+5;
             this.setState({left:lefts,right:rights});
         }else{
-            let length=this.state.arr130.length;
-            let lengths=this.state.arr130.length-5
+            let length=this.state.arrbridge.length;
+            let lengths=this.state.arrbridge.length-5
             this.setState({right:length,left:lengths});
         }
-        let arr=this.state.arr130.slice(this.state.left,this.state.right);
-        this.setState({arr13:arr});
+        let arr=this.state.arrbridge.slice(this.state.left,this.state.right);
+        this.setState({arrRefine:arr});
         //console.log("你点击了获取right数据");
     }
     render(){
@@ -695,7 +728,7 @@ class Home extends Component{
                          <div className="home-good-play">
                              <ul>
                                  {
-                                   _this.state.arr13.map((item,index)=>{
+                                   _this.state.arrRefine.map((item,index)=>{
                                          return (<NavLink to={"/detail/"+item.product_id} key={index}>
                                             <li>
                                                 <div>
